@@ -1,0 +1,70 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+   background-color: skyblue;
+
+}
+#title{
+    text-align: center;
+}
+
+#weatherForm{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+
+}
+.menu-bar{
+ 
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    
+    border: 2px solid black;
+    gap: 10px;
+    /* height: 20px; */
+  
+
+}
+
+path{
+    
+    fill: white;
+
+}
+
+.heart-button{
+    background-color: transparent;
+     align-self: center;
+    cursor: pointer;
+    width: 45px;
+    height: 40px;
+    border: 2px solid #5A5F72;
+    background-color: #5A5F72;
+   
+
+  
+}
+.heart-button:hover{
+    background-color: lightgray;
+  
+}
+.heart-button svg{
+
+     width: 20px;
+    /* height: 20px;  */
+    /* padding-bottom: 15px; */
+}
+a button{
+    height: 40px;
+    border: 2px solid #5A5F72;
+    font-size: 1.1rem;
+    padding: 10px;
+    background-color: #5A5F72;
+
+}
+
