@@ -2,7 +2,7 @@ body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
-   background-color: skyblue;
+   background-color: rgb(77, 198, 246)
 
 }
 #title{
@@ -23,34 +23,55 @@ body {
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    
     border: 2px solid black;
-    gap: 10px;
-    /* height: 20px; */
-  
+    
+    height: 40px;
+    margin-top: 5px;
+     /* position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 0;
+    width: 100%;
+  margin-bottom: 100px;
+  clear: both; */
 
 }
 
 path{
-    
     fill: white;
 
 }
+ .menu-left-title{
+    text-decoration: none;
+    color: black;
+    font-size: 1.2rem;
+    font-weight: bold;
 
+    margin-bottom: 3px;
+ 
+
+ }
+ .menu-logo {
+ border: 2px solid red
+ 
+
+ }
+ 
 .heart-button{
     background-color: transparent;
      align-self: center;
     cursor: pointer;
     width: 45px;
     height: 40px;
-    border: 2px solid #5A5F72;
-    background-color: #5A5F72;
+    border: 2px solid rgb(34, 134, 174);
+    border: none;
    
-
   
 }
 .heart-button:hover{
-    background-color: lightgray;
+    background-color: rgb(22, 147, 197);;
+    border: none
+
   
 }
 .heart-button svg{
@@ -58,13 +79,20 @@ path{
      width: 20px;
     /* height: 20px;  */
     /* padding-bottom: 15px; */
+    fill: rgb(49, 129, 160);;
 }
 a button{
     height: 40px;
-    border: 2px solid #5A5F72;
+    border: 2px solid rgb(31, 160, 211);;
     font-size: 1.1rem;
     padding: 10px;
-    background-color: #5A5F72;
+   background-color: rgb(31, 160, 211);;
 
+    
+
+}
+a button:hover{
+    background-color: rgb(22, 147, 197);;
+   
 }
 
