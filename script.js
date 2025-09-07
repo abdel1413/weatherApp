@@ -32,37 +32,88 @@ form.addEventListener('submit', function(event) {
    const temparature = data.main.temp;
    const highTemp = data.main.temp_max;
    const lowTemp = data.main.temp_min;
-    const humidity = data.main.humidity;
-    const windSpeed = data.wind.speed;
     const iconUrl = `http://openweathermap.org/img/wn/${iconCode}.png`;
     console.log(iconUrl)
     // Display the weather information 
     hour < 10 ? '0' + hour : hour;
     minutes < 10 ? '0' + minutes : minutes; 
     const amPm = hour >= 12 ? 'PM' : 'AM';  
+
     resultDiv.innerHTML = `<div class="weather-info">
-      
+      <div class='infor-nav'
      <p>${city}, ${data.sys.country}</p>
       <p> As of ${hour}:${minutes} ${amPm}</p>  
+      </div>
+      <div class='info-details'>
+       <span>${temparature}</span>
+       <span> °C</span>
+        <span> | ${farenheit.toFixed(2)} °F</span>
+       <span><img src="${iconUrl}" alt="Weather Icon"/> </span>
+      </div>
+      <div class='infor-description'>
+        <p>${weatherDescription}</p>
+        <p>High: ${highTemp} °C, Low: ${lowTemp} °</p> 
+         
+        <button class='more-details'>More Details</button>
+       </div
     </div>
-
-    <h2>Weather today in ${city}</h2>
-    <img src="${iconUrl}" alt="Weather Icon">
-    <p>Description: ${weatherDescription}</p>
-    <p>Temperature: ${temparature} °C</p>
-    <p>High: ${highTemp} °C, Low: ${lowTemp} °</p> 
-    
-    <p>Pressure: ${data.main.pressure} hPa</p>
-
-    <p>Feels Like: ${data.main.feels_like} °C</p>
-    <p>Location: ${data.name}, ${data.sys.country}</p>
-    <p>Humidity: ${humidity}%</p>
-    <p>Wind Speed: ${windSpeed} m/s</p>
     `;
 
-  
-  })
+    const moreDetailsButton = document.querySelector('.more-details');
+moreDetailsButton.addEventListener('click',()=>{
+  if(moreDetailsButton.textContent === 'More Details'){
+seeMorDetails(data);
+moreDetailsButton.textContent = 'Less Details' 
+}else{
+ const ul = document.querySelector('.items-list');
+ ul.remove();
+ moreDetailsButton.textContent = 'More Details'
+}
+
+});
+     
+  }).catch(error=>{
+    console.error('Error fetching weather data:', error);
+    resultDiv.innerHTML = `<p class="error">Could not retrieve weather data for "${input.value}". Please check the city name and try again.</p>`;
+
+  });
     
   
 })
+
+
+const seeMorDetails = (data) => {
+   const humidity = data.main.humidity;
+    const windSpeed = data.wind.speed;
+    const pressure = data.main.pressure;
+    const feelsLike = data.main.feels_like;
+    // Clear previous details if any
+    // const existingDetails = document.querySelector('.more-weather-details');
+    // if (existingDetails) {
+    //     existingDetails.remove();
+    // }
+ const ul = document.createElement('ul');
+ ul.classList.add(('items-list'));
+
+ ul.innerHTML = `
+   
+   <li>Weather today in ${data.name}, ${data.sys.country}</li>
+     <li>Pressure: ${pressure} hPa</li>
+    <li>Feels Like: ${feelsLike} °C</li>
+    <li>Humidity: ${humidity}%</li>
+    <li>Wind Speed: ${windSpeed} m/s</li>
+    <li>Cloudiness: ${data.clouds.all}%</li>
+    <li>Sunrise: ${new Date(data.sys.sunrise * 1000).toLocaleTimeString()}</li>
+    <li>Sunset: ${new Date(data.sys.sunset * 1000).toLocaleTimeString()}</li>
+    <li>Coordinates: [${data.coord.lat}, ${data.coord.lon}]</li>
+    <li>Time Zone: ${data.timezone} seconds from UTC</li> 
+    <li>Visibility: ${data.visibility} meters</li>
+ `;
+ resultDiv.appendChild(ul);
+
+}
+
+// Note: Replace  
+// const YOUR_API_KEY = 'your_openweathermap_api_key_here';
+// with your actual OpenWeatherMap API key.     
  
