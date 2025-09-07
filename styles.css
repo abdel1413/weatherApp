@@ -87,12 +87,113 @@ a button{
     font-size: 1.1rem;
     padding: 10px;
    background-color: rgb(31, 160, 211);;
-
-    
-
 }
 a button:hover{
     background-color: rgb(22, 147, 197);;
    
 }
+.weather-info{
+   margin-top: 10px;
+    border: 2px solid black;
+}
+.weather-infor-nav{
+       background-color: rgb(31, 160, 211);;
+        color: white;
+        padding: 5px;
+        text-align: center;
+        font-size: 1.1rem;
+        font-weight: bold;  
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+}
 
+
+
+.weather-info-details{
+   display: flex;
+   justify-content:flex-start;
+   align-items: center;
+padding: 0;
+margin: 0;
+}
+
+  #temp{
+    font-size: 3.5rem;
+    font-weight: bold;
+    /* margin-right: 5px; */
+    padding: 0px;
+    margin: 0;
+    color: white;
+  }
+    #deg-cel{
+        font-size: 3.5rem;
+        font-weight: bold;
+
+        color: white;
+        padding: 0px;
+    }
+    #deg-fah{
+        font-size: 1.2rem;
+        font-weight: bold;
+        margin-right: 5px;
+        color: white;
+        padding: 0px;
+    }
+    #icon{
+     
+        padding-left: 0;
+        padding: 0;
+        align-items: left;
+        margin-left: 0;
+        /* width: 100px;
+        height: 80px; */
+        padding-bottom: 0px;
+        padding: 0px;
+
+    
+    }
+    #icon img{
+       
+        padding-left: 0;
+        width: 90px;
+        height: 70px;
+        padding: 0px;
+       
+
+    }
+
+.weather-info-description{
+    
+   display: flex;
+   font-size: 1.5rem;
+    font-weight: bold;
+   
+    color: white;
+    justify-content: space-between;
+   
+}
+
+.weather-info-description p{
+    margin: 0;
+    padding: 5px;
+    padding-top: 0px;
+    
+}
+
+.weather-info-description button{
+    cursor: pointer;
+    display: flex;
+    margin-top: 10%;
+    height: 40px;
+    border: 2px solid rgb(31, 160, 211);;
+    font-size: 1rem;
+    padding: 10px;
+   background-color: rgb(31, 160, 211);;
+   margin-right: 10px;
+
+}
+.weather-info-description button:hover{
+    background-color: rgb(22, 147, 197);;
+   
+}   

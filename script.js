@@ -37,24 +37,28 @@ form.addEventListener('submit', function(event) {
     // Display the weather information 
     hour < 10 ? '0' + hour : hour;
     minutes < 10 ? '0' + minutes : minutes; 
-    const amPm = hour >= 12 ? 'PM' : 'AM';  
+    const amPm = hour >= 12 ? 'PM' : 'AM'; 
 
+    //will come back to this to add farenheit
+    //<span id='deg-fah'> | ${farenheit.toFixed(2)} °F</span>
     resultDiv.innerHTML = `<div class="weather-info">
-      <div class='infor-nav'
+      <div class='weather-infor-nav'
      <p>${city}, ${data.sys.country}</p>
       <p> As of ${hour}:${minutes} ${amPm}</p>  
       </div>
-      <div class='info-details'>
-       <span>${temparature}</span>
-       <span> °C</span>
-        <span> | ${farenheit.toFixed(2)} °F</span>
-       <span><img src="${iconUrl}" alt="Weather Icon"/> </span>
+      <div class='weather-info-details'>
+       <span id='temp'>${temparature}</span>
+       <span id='deg-cel'>°</span>
+       <span id='icon'><img src="${iconUrl}" alt="Weather Icon"/> </span>
       </div>
-      <div class='infor-description'>
+      <div class='weather-info-description'>
+       <div class='description-items'>
         <p>${weatherDescription}</p>
-        <p>High: ${highTemp} °C, Low: ${lowTemp} °</p> 
-         
+        <p>H: ${highTemp}°, L: ${lowTemp}°</p> 
+        </div>
+        <div class='description-items'>
         <button class='more-details'>More Details</button>
+        </div>
        </div
     </div>
     `;
@@ -78,7 +82,7 @@ moreDetailsButton.textContent = 'Less Details'
 
   });
     
-  
+   input.value = '';  
 })
 
 
