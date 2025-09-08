@@ -96,22 +96,26 @@ const seeMorDetails = (data) => {
     // if (existingDetails) {
     //     existingDetails.remove();
     // }
- const ul = document.createElement('ul');
+ const ul = document.createElement('div');
  ul.classList.add(('items-list'));
 
  ul.innerHTML = `
    
-   <li>Weather today in ${data.name}, ${data.sys.country}</li>
-     <li>Pressure: ${pressure} hPa</li>
-    <li>Feels Like: ${feelsLike} °C</li>
-    <li>Humidity: ${humidity}%</li>
-    <li>Wind Speed: ${windSpeed} m/s</li>
-    <li>Cloudiness: ${data.clouds.all}%</li>
-    <li>Sunrise: ${new Date(data.sys.sunrise * 1000).toLocaleTimeString()}</li>
-    <li>Sunset: ${new Date(data.sys.sunset * 1000).toLocaleTimeString()}</li>
-    <li>Coordinates: [${data.coord.lat}, ${data.coord.lon}]</li>
-    <li>Time Zone: ${data.timezone} seconds from UTC</li> 
-    <li>Visibility: ${data.visibility} meters</li>
+   <p>Weather today in ${data.name}, ${data.sys.country}</p>
+   <div class='pres-sunrise-set'>
+   <div> <span>Feels Like:/<span> <span>${feelsLike}°C</span></div>
+   <div>
+   <span>Sunrise: ${new Date(data.sys.sunrise * 1000).toLocaleTimeString()}</span> |
+   <span>Sunset: ${new Date(data.sys.sunset * 1000).toLocaleTimeString()}</span>
+   </div>
+  </div>
+     <div><span>Pressure: </sapn><span>${pressure} hPa</span></div>
+    <div> <span>Humidity:</span><span>${humidity}%</span></div>
+    <div> <span>Wind Speed:</span><span>${windSpeed}m/s</span></div>
+    <div><span>Cloudiness:</span><span ${data.clouds.all}%</span></div>
+    <div> <span>Coordinates: </span><span>${data.coord.lat}</span> <span> ${data.coord.lon}</span></div>
+    <div> <span>Time Zone: </span> <span>${data.timezone} </span>seconds from UTC</div> 
+    <div> <span>Visibility:</span> <span>${data.visibility} meters</span></div>
  `;
  resultDiv.appendChild(ul);
 
