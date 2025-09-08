@@ -57,7 +57,7 @@ form.addEventListener('submit', function(event) {
         <p>H: ${highTemp}°, L: ${lowTemp}°</p> 
         </div>
         <div class='description-items'>
-        <button class='more-details'>More Details</button>
+        <button class='more-details'>+</button>
         </div>
        </div
     </div>
@@ -65,13 +65,13 @@ form.addEventListener('submit', function(event) {
 
     const moreDetailsButton = document.querySelector('.more-details');
 moreDetailsButton.addEventListener('click',()=>{
-  if(moreDetailsButton.textContent === 'More Details'){
+  if(moreDetailsButton.textContent === '+'){
 seeMorDetails(data);
-moreDetailsButton.textContent = 'Less Details' 
+moreDetailsButton.textContent = '-' 
 }else{
  const ul = document.querySelector('.items-list');
  ul.remove();
- moreDetailsButton.textContent = 'More Details'
+ moreDetailsButton.textContent = '+'
 }
 
 });
@@ -87,10 +87,14 @@ moreDetailsButton.textContent = 'Less Details'
 
 
 const seeMorDetails = (data) => {
-   const humidity = data.main.humidity;
-    const windSpeed = data.wind.speed;
-    const pressure = data.main.pressure;
-    const feelsLike = data.main.feels_like;
+  //  const humidity = data.main.humidity;
+     
+  //   const pressure = data.main.pressure;
+  //   const feelsLike = data.main.feels_like;
+     const visibility = data.visibility;
+     const windSpeed = data.wind.speed;
+    const { humidity, pressure, feels_like, temp_max, temp_min} = data.main
+
     // Clear previous details if any
     // const existingDetails = document.querySelector('.more-weather-details');
     // if (existingDetails) {
@@ -102,20 +106,35 @@ const seeMorDetails = (data) => {
  ul.innerHTML = `
    
    <p>Weather today in ${data.name}, ${data.sys.country}</p>
+
    <div class='pres-sunrise-set'>
-   <div> <span>Feels Like:/<span> <span>${feelsLike}°C</span></div>
-   <div>
-   <span>Sunrise: ${new Date(data.sys.sunrise * 1000).toLocaleTimeString()}</span> |
-   <span>Sunset: ${new Date(data.sys.sunset * 1000).toLocaleTimeString()}</span>
-   </div>
+      <div class='feels-like'> <div>Feels Like:</div><div class='feels-like-deg'>${feels_like}°<span id='term'>C</span></div></div>
+      <div>
+      <span>Sunrise: ${new Date(data.sys.sunrise * 1000).toLocaleTimeString()}</span> |
+      <span>Sunset: ${new Date(data.sys.sunset * 1000).toLocaleTimeString()}</span>
+      </div>
+  </div> 
+  <div class='details-divider'> 
+    <div class="info-divider">
+
+      <div class="hibh-low-temp sub-info">
+        <div><span>High:</span><span>${temp_max}°C</span></div>
+        <div><span>Low:</span><span>${temp_min}°C</span></div>
+      </div>
+
+      <div class='sub-info'> <span >Humidity:</span><span>${humidity}%</span></div>
+      <div class='sub-info ><span>Pressure: </sapn><span>${pressure} hPa</span></div>
+      <div class='sub-info > <span>Visibility:</span> <span>${visibility} meters</span></div>
+    </div>
+
+    <div class="info-divider">
+      <div class='sub-info'> <span>Wind: </span><span>${windSpeed}m/s</span></div>
+      <div class='sub-info'><span>Longtitude:</span> <span> ${(data.coord.lon).toFixed(2)}</span></div>
+      <div class='sub-info'><span>Latitude:</span><span>${(data.coord.lat).toFixed(2)}</span></div>
+    
+    </div> 
+  
   </div>
-     <div><span>Pressure: </sapn><span>${pressure} hPa</span></div>
-    <div> <span>Humidity:</span><span>${humidity}%</span></div>
-    <div> <span>Wind Speed:</span><span>${windSpeed}m/s</span></div>
-    <div><span>Cloudiness:</span><span ${data.clouds.all}%</span></div>
-    <div> <span>Coordinates: </span><span>${data.coord.lat}</span> <span> ${data.coord.lon}</span></div>
-    <div> <span>Time Zone: </span> <span>${data.timezone} </span>seconds from UTC</div> 
-    <div> <span>Visibility:</span> <span>${data.visibility} meters</span></div>
  `;
  resultDiv.appendChild(ul);
 
