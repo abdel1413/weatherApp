@@ -1,12 +1,41 @@
 const input = document.getElementById('cityInput');
 const form = document.getElementById('weatherForm');
 const resultDiv = document.getElementById('weatherResult');
-const YOUR_API_KEY = 'd1e34c8fe7600f6587b90b8e32c0f5f8'
+const API_KEY = 'd1e34c8fe7600f6587b90b8e32c0f5f8'
+
 const fetchWeather = async (city) => {
   const meteoDdata = await fetch("https://api.open-meteo.com/v1/forecast?latitude=52.52&longitude=13.41&current=temperature_2m,wind_speed_10m&hourly=temperature_2m,relative_humidity_2m,wind_speed_10m" );
       let meteoValue = await meteoDdata.json();
-      console.log('meteoValue',meteoValue) 
-  const     data = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${YOUR_API_KEY}&units=metric`);
+      console.log('meteoValue',meteoValue) ;
+      const hourlyTime = meteoValue.hourly['time'];
+      const hourlyTemp = meteoValue.hourly['temperature_2m'];
+      const hourlyHumidity = meteoValue.hourly['relative_humidity_2m'];
+      const hourlyWindSpeed = meteoValue.hourly['wind_speed_10m'];
+      console.log('hourlyTime',hourlyTime);
+      console.log('hourlyTemp',hourlyTemp);
+      console.log('hourlyHumidity',hourlyHumidity);
+      console.log('hourlyWindSpeed',hourlyWindSpeed);
+      for(let i=0; i < hourlyTime.length; i++){
+      let time = hourlyTime[i]
+      
+      const date = new Date();
+
+      let hours = date.getHours();
+      console.log('hours',hours)
+     let  minutes = date.getMinutes();
+      const amPm = hours >= 12 ? 'PM' : 'AM';
+        hours =    hours < 10 ? '0' + hours : hours;
+       minutes =  minutes < 10 ? '0' + minutes : minutes;
+       
+      if(hours <= 12){
+        console.log(`At ${hours} ${amPm}, the temperature is ${hourlyTemp[i]}°C, humidity is ${hourlyHumidity[i]}%, and wind speed is ${hourlyWindSpeed[i]} m/s.`);
+       
+      }
+
+     // console.log('time', new Date(time).toLocaleDateString())
+       // console.log(`At ${hourlyTime[i]}, the temperature is ${hourlyTemp[i]}°C, humidity is ${hourlyHumidity[i]}%, and wind speed is ${hourlyWindSpeed[i]} m/s.`);
+      }
+  const     data = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${API_KEY}&units=metric`);
     return  await data.json();    
 }
 
@@ -129,7 +158,7 @@ const seeMorDetails = (data) => {
 
     <div class="info-divider">
       <div class='sub-info'> <span>Wind: </span><span>${windSpeed}m/s</span></div>
-      <div class='sub-info'><span>Longtitude:</span> <span> ${(data.coord.lon).toFixed(2)}</span></div>
+      <div class='sub-info'><span>Longitude:</span> <span> ${(data.coord.lon).toFixed(2)}</span></div>
       <div class='sub-info'><span>Latitude:</span><span>${(data.coord.lat).toFixed(2)}</span></div>
     
     </div> 
