@@ -11,33 +11,81 @@ const fetchWeather = async (city) => {
       const hourlyTemp = meteoValue.hourly['temperature_2m'];
       const hourlyHumidity = meteoValue.hourly['relative_humidity_2m'];
       const hourlyWindSpeed = meteoValue.hourly['wind_speed_10m'];
-      console.log('hourlyTime',hourlyTime);
-      console.log('hourlyTemp',hourlyTemp);
-      console.log('hourlyHumidity',hourlyHumidity);
-      console.log('hourlyWindSpeed',hourlyWindSpeed);
-      for(let i=0; i < hourlyTime.length; i++){
-      let time = hourlyTime[i]
-      
-      const date = new Date();
+      // console.log('hourlyTime',hourlyTime);
+      // console.log('hourlyTemp',hourlyTemp);
+      // console.log('hourlyHumidity',hourlyHumidity);
+      // console.log('hourlyWindSpeed',hourlyWindSpeed);
+ let dateString = ''
 
-      let hours = date.getHours();
-      console.log('hours',hours)
-     let  minutes = date.getMinutes();
-      const amPm = hours >= 12 ? 'PM' : 'AM';
-        hours =    hours < 10 ? '0' + hours : hours;
-       minutes =  minutes < 10 ? '0' + minutes : minutes;
+ const currDate = new Date();
+
+      let currHours = currDate.getHours();
+   
        
-      if(hours <= 12){
-        console.log(`At ${hours} ${amPm}, the temperature is ${hourlyTemp[i]}°C, humidity is ${hourlyHumidity[i]}%, and wind speed is ${hourlyWindSpeed[i]} m/s.`);
+     let  currMinutes = currDate.getMinutes();
+      const currAmPm = currHours >= 12 ? 'PM' : 'AM';
+        currHours =    currHours < 10 ? '0' + currHours : currHours;
+       currMinutes =  currMinutes < 10 ? '0' + currMinutes : currMinutes;
+      // console.log('curr hours',currHours)
        
+    
+      for(let i=currHours; i < hourlyTime.length; i++){
+      let time = hourlyTime[i]
+     
+          const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }
+
+// console.log('t',hourlyTime[i].toLocaleDateString(undefined, options))
+
+     
+      const date = new Date(time); 
+      let hours = currDate.getHours();
+      let minutes = currDate.getMinutes();
+      const amPm = hours >= 12 ? 'PM' : 'AM'; 
+      hours = hours % 12;
+      hours = hours ? hours : 12; // the hour '0' should be '12'
+      minutes = minutes < 10 ? '0' + minutes : minutes;     
+       console.log('gethours',hours)
+      // console.log('minutes',minutes)    
+
+    
+
+      // Display only the first 12 hours  
+      if(i < currHours + 12){  
+        
+        // hours = hours < 10 ? '0' + hours : hours;
+        // minutes = minutes < 10 ? '0' + minutes : minutes; 
+        console.log('hours',hours)
+      console.log('minutes',minutes)    
+       // console.log('amPm',amPm)    
+       // console.log('time',time)    
+        console.log('temp',hourlyTemp[i])    
+        console.log('humidity',hourlyHumidity[i])    
+        console.log('wind speed',hourlyWindSpeed[i])    
+       // console.log('i',i)    
+        console.log('currHours',currHours)    
+        console.log('currMinutes',currMinutes)    
+        console.log('currAmPm',currAmPm)    
+         console.log('------------------')      
+
       }
+
+       
+    
+    
+      dateString = (`At ${hours}:${minutes} ${amPm}, the temperature is ${hourlyTemp[i]}°C, humidity is ${hourlyHumidity[i]}%, and wind speed is ${hourlyWindSpeed[i]} m/s.`);
+     
+      
 
      // console.log('time', new Date(time).toLocaleDateString())
        // console.log(`At ${hourlyTime[i]}, the temperature is ${hourlyTemp[i]}°C, humidity is ${hourlyHumidity[i]}%, and wind speed is ${hourlyWindSpeed[i]} m/s.`);
       }
+
+      console.log('dateString',dateString)
+
   const     data = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${API_KEY}&units=metric`);
     return  await data.json();    
 }
+
 
 form.addEventListener('submit', function(event) {
     event.preventDefault();
@@ -46,13 +94,14 @@ form.addEventListener('submit', function(event) {
     console.log(data )
     const  weatherDescription = data.weather[0].description;
     const  iconCode = data.weather[0].icon;
-  const feelsLike = data.main.feels_like;
-  const farenheit = (feelsLike * 9/5) + 32;
-   console.log( 'fa',farenheit)
+  let  feelsLike = data.main.feels_like;
+  const { humidity, pressure, feels_like, temp_max, temp_min} = data.main
+  
+   
    const timstamp = data.dt;
-   console.log('ts',timstamp)
+   
    const date = new Date(timstamp * 1000);
-    console.log('date',date)
+   
     const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
     const formattedDate = date.toLocaleDateString(undefined, options);
     console.log('formattedDate',formattedDate)
@@ -62,14 +111,13 @@ form.addEventListener('submit', function(event) {
    const highTemp = data.main.temp_max;
    const lowTemp = data.main.temp_min;
     const iconUrl = `http://openweathermap.org/img/wn/${iconCode}.png`;
-    console.log(iconUrl)
+  
     // Display the weather information 
     hour < 10 ? '0' + hour : hour;
     minutes < 10 ? '0' + minutes : minutes; 
     const amPm = hour >= 12 ? 'PM' : 'AM'; 
 
-    //will come back to this to add farenheit
-    //<span id='deg-fah'> | ${farenheit.toFixed(2)} °F</span>
+    
     resultDiv.innerHTML = `<div class="weather-info">
       <div class='weather-infor-nav'
      <p>${city}, ${data.sys.country}</p>
@@ -79,19 +127,108 @@ form.addEventListener('submit', function(event) {
        <span id='temp'>${temparature}</span>
        <span id='deg-cel'>°</span>
        <span id='icon'><img src="${iconUrl}" alt="Weather Icon"/> </span>
+       <div class='converter'><button>Fahrenheit</button></div>
       </div>
+      
       <div class='weather-info-description'>
        <div class='description-items'>
         <p>${weatherDescription}</p>
         <p>H: ${highTemp}°, L: ${lowTemp}°</p> 
         </div>
+        
         <div class='description-items'>
         <button class='more-details'>+</button>
         </div>
        </div
     </div>
-    `;
+    ` ;
 
+  
+ const converterButton = document.querySelector('.converter button');
+  let isCelsius = true;   
+
+
+  const tempSpan = document.getElementById('temp');
+  const degCelSpan = document.getElementById('deg-cel');
+ 
+
+  converterButton.addEventListener('click',()=>{
+   // const degFahSpan = document.getElementById('deg-fah');
+ 
+    let currentTemp = parseFloat( tempSpan.textContent);
+    let tempHighValue =''
+     let tempLowValue = ''
+     
+     
+    if(isCelsius){
+
+      // Convert to Fahrenheit
+      const fahrenheitTemp = (currentTemp * 9/5) + 32;
+      tempSpan.textContent = fahrenheitTemp.toFixed(2);
+      //degCelSpan.textContent = '°F';
+       feelsLike = (feelsLike * 9/5) + 32;
+      converterButton.textContent = 'Celsius';
+       const tempMaxHigh = (highTemp * 9/5) + 32;
+       const tempMinLow = (lowTemp * 9/5) + 32;
+      const highLowTemp = document.querySelector('.weather-info-description p:nth-child(2)');
+    
+        // tempHighValue = tempHigh.innerHTML
+        // tempLowValue = tempLow.innerHTML
+        console.log('item list', document.querySelector('.item-list'))
+        
+
+     if(document.querySelector(".items-list")){
+
+     const tempHigh = document.querySelector('.temp-high span:nth-child(2)')
+     const tempLow = document.querySelector('.temp-low span:nth-child(2)')
+       tempHigh.textContent = `${converter(highTemp)}`
+       tempLow.textContent = `${converter(lowTemp)}`
+      
+      // console.log('hhi', tempHigh,'lwel', tempLow)
+
+     }
+
+
+     
+      const feelsLikeDiv = document.querySelector('.feels-like-deg');
+     // tempHighLow.innerHTML = `${tempMaxHigh}`
+      //feelsLikeDiv.innerHTML = `${feelsLike.toFixed(2)}°<span id='term'></span>`;
+      highLowTemp.innerHTML = `H: ${tempMaxHigh.toFixed(2)}°, L: ${tempMinLow.toFixed(2)}°`;
+     // tempHigh.textContent = `${tempMaxHigh}`
+     // tempLow.textContent = `${tempMinLow}`
+
+      isCelsius = false;
+    }else{
+   
+     
+      console.log("ite lis", document.querySelector('.item-list'))
+      const celsiusTemp = (currentTemp - 32) * 5/9;
+     feelsLike = (feelsLike - 32) * 5/9;
+      
+      tempSpan.textContent = celsiusTemp.toFixed(2);
+      //degCelSpan.textContent = '°C';
+      const highLowTemp = document.querySelector('.weather-info-description p:nth-child(2)');
+
+      highLowTemp.innerHTML = `H: ${highTemp}°, L: ${lowTemp}°`;
+      converterButton.textContent = 'Fahrenheit';
+       if(document.querySelector(".iterm-list")){
+         const tempHigh = document.querySelector('.temp-high span:nth-child(2)')
+         const tempLow = document.querySelector('.temp-low span:nth-child(2)')
+         console.log('httt', highTemp, )
+         console.log('lttt', lowTemp)
+       tempHigh.textContent = `${converter(highTemp)}`
+    tempLow.textContent =`${converter(lowTemp)}`
+    console.log('h2', tempHigh, 'l2', tempLow)
+      }
+      // tempHigh.textContent = `${}`
+      // tempLow.textContent = `${}`
+      isCelsius = true;
+    }
+
+
+
+  });
+    // Add event listener to the more details button
     const moreDetailsButton = document.querySelector('.more-details');
 moreDetailsButton.addEventListener('click',()=>{
   if(moreDetailsButton.textContent === '+'){
@@ -137,7 +274,8 @@ const seeMorDetails = (data) => {
    <p>Weather today in ${data.name}, ${data.sys.country}</p>
 
    <div class='pres-sunrise-set'>
-      <div class='feels-like'> <div>Feels Like:</div><div class='feels-like-deg'>${feels_like}°<span id='term'>C</span></div></div>
+      <div class='feels-like'> <div>Feels Like:</div>
+      <div class='feels-like-deg'>${converter(feels_like)}°<span id='term'></span></div></div>
       <div>
       <span>Sunrise: ${new Date(data.sys.sunrise * 1000).toLocaleTimeString()}</span> |
       <span>Sunset: ${new Date(data.sys.sunset * 1000).toLocaleTimeString()}</span>
@@ -145,10 +283,9 @@ const seeMorDetails = (data) => {
   </div> 
   <div class='details-divider'> 
     <div class="info-divider">
-
       <div class="hibh-low-temp sub-info">
-        <div><span>High:</span><span>${temp_max}°C</span></div>
-        <div><span>Low:</span><span>${temp_min}°C</span></div>
+        <div class='temp-high'><span>High:</span><span>${temp_max}</span><span>°</span></div>
+        <div class='temp-low'><span>Low:</span><span >${temp_min}</span><span>°</span></div>
       </div>
 
       <div class='sub-info'> <span >Humidity:</span><span>${humidity}%</span></div>
@@ -167,6 +304,21 @@ const seeMorDetails = (data) => {
  `;
  resultDiv.appendChild(ul);
 
+}
+let isCelsius = true;
+const converter=(temp)=>{
+  if(isCelsius){
+    // Convert to Fahrenheit
+    const fahrenheitTemp = (temp * 9/5) + 32;
+    return fahrenheitTemp.toFixed(2);
+   
+  }else{
+ 
+    const celsiusTemp = (temp - 32) * 5/9;
+   return celsiusTemp.toFixed(2);
+    
+  }
+    
 }
 
 // Note: Replace  
