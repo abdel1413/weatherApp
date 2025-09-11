@@ -11,20 +11,42 @@ const fetchWeather = async (city) => {
       console.log('c', c.substring(11,13))
     
       const hourlyTime = meteoValue.hourly['time'];
-    //  console.log('hourly',hourlyTime) ;
+     // console.log('hourly',hourlyTime) ;
       const hourlyTemp = meteoValue.hourly['temperature_2m'];
       const hourlyHumidity = meteoValue.hourly['relative_humidity_2m'];
       const hourlyWindSpeed = meteoValue.hourly['wind_speed_10m'];
-      // console.log('hourlyTime',hourlyTime);
-      // console.log('hourlyTemp',hourlyTemp);
-      // console.log('hourlyHumidity',hourlyHumidity);
-      // console.log('hourlyWindSpeed',hourlyWindSpeed);
+      console.log('hourlyTime',hourlyTime);
+      hourlyTime.forEach(time =>{
+       // console.log(time.substring(11,13))
+
+      })
+      console.log(hourlyTime.length/24)
+       const currDate = new Date();
+             let currHours = currDate.getHours();
+       console.log('gethou', currHours)
+       let  hourlyView = ''
+      for(let i = currHours; i< hourlyTime.length/7 ; i++){
+        let hour = hourlyTime[i].substring(11,13)
+         console.log('hh',i, hour )
+         hourlyView += `<div class='hourly-list'>
+       <div>
+         <div><span>${hour}: </span>${hourlyTemp[i]}</span><span>°C</span></span>
+         <span> ${hourlyHumidity[i]}</span><span>°C</span> 
+          <span>${hourlyTemp[i]}</span><span>°C</span>
+       <span>${hourlyHumidity[i]}</span><span>%</span>
+        <span>${hourlyWindSpeed[i]}</span><span>mph</span></div>
+         </div>
+       </div>`
+
+      }
+      console.log("hourlyView", hourlyView)
+       document.querySelector('.daily-weather').innerHTML = `${hourlyView}`
+
  let dateString = ''
 
- const currDate = new Date();
 
-      let currHours = currDate.getHours();
-       console.log('gethou', currHours)
+
+
        
      let  currMinutes = currDate.getMinutes();
       const currAmPm = currHours >= 12 ? 'PM' : 'AM';
@@ -48,7 +70,7 @@ const fetchWeather = async (city) => {
       hours = hours % 12;
       hours = hours ? hours : 12; // the hour '0' should be '12'
      // minutes = minutes < 10 ? '0' + minutes : minutes;     
-       console.log('gethours',hours)
+      // console.log('gethours',hours)
       // console.log('minutes',minutes)    
 
     
@@ -76,15 +98,29 @@ const fetchWeather = async (city) => {
        
     
     
-      dateString = (`At ${hours}:${minutes} ${amPm}, the temperature is ${hourlyTemp[i]}°C, humidity is ${hourlyHumidity[i]}%, and wind speed is ${hourlyWindSpeed[i]} m/s.`);
+      dateString = (`At ${hours}: ${minutes} ${amPm}, the temperature is ${hourlyTemp[i]}°C, humidity is ${hourlyHumidity[i]}%, and wind speed is ${hourlyWindSpeed[i]} m/s.`);
      
       
 
      // console.log('time', new Date(time).toLocaleDateString())
        // console.log(`At ${hourlyTime[i]}, the temperature is ${hourlyTemp[i]}°C, humidity is ${hourlyHumidity[i]}%, and wind speed is ${hourlyWindSpeed[i]} m/s.`);
+       //console.log('dateString',dateString)
+
+       const hourlyList = `<div class='hourly-list'>
+       <div>
+         <span>${hours}:</span>${hourlyTemp[i]}</span><span>°C</span></span>
+          <span>${hourlyHumidity[i]}</span><span>°C</span>
+          <span>${hourlyTemp[i]}</span><span>°C</span>
+          <span>${hourlyHumidity[i]}</span><span>%</span>
+          <span>${hourlyWindSpeed[i]}</span><span>m/s.</span>
+         </div>
+       </div>`
+
+      
+      // console.log(hourlyList)
       }
 
-      console.log('dateString',dateString)
+
 
   const     data = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${API_KEY}&units=metric`);
     return  await data.json();    
