@@ -288,3 +288,10 @@ color: black;
     margin-top: 10px;
     padding: 10px;
 }
+
+.detail-summary{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+}

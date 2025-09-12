@@ -6,40 +6,60 @@ const API_KEY = 'd1e34c8fe7600f6587b90b8e32c0f5f8'
 const fetchWeather = async (city) => {
   const meteoDdata = await fetch("https://api.open-meteo.com/v1/forecast?latitude=52.52&longitude=13.41&current=temperature_2m,wind_speed_10m&hourly=temperature_2m,relative_humidity_2m,wind_speed_10m" );
       let meteoValue = await meteoDdata.json();
-      console.log('met',meteoValue.current.time)
-      const c = meteoValue.current.time;
-      console.log('c', c.substring(11,13))
+
     
+      
+      console.log('met',meteoValue)
       const hourlyTime = meteoValue.hourly['time'];
-     // console.log('hourly',hourlyTime) ;
       const hourlyTemp = meteoValue.hourly['temperature_2m'];
       const hourlyHumidity = meteoValue.hourly['relative_humidity_2m'];
       const hourlyWindSpeed = meteoValue.hourly['wind_speed_10m'];
-      console.log('hourlyTime',hourlyTime);
-      hourlyTime.forEach(time =>{
-       // console.log(time.substring(11,13))
+    
+      
 
-      })
-      console.log(hourlyTime.length/24)
        const currDate = new Date();
-             let currHours = currDate.getHours();
-       console.log('gethou', currHours)
+     const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+    const formattedDate = currDate.toLocaleDateString(undefined, options);
+    let date = formattedDate.substring(0,20)
+
+    console.log('formatte', date)
+
+     // console.log('day', currDate.getUTCDate())
+      let currHours = currDate.getHours();
+       let minutes = currDate.getMinutes()
+       minutes = minutes < 10 ? "0"+ minutes : minutes
+      
        let  hourlyView = ''
       for(let i = currHours; i< hourlyTime.length/7 ; i++){
         let hour = hourlyTime[i].substring(11,13)
-         console.log('hh',i, hour )
-         hourlyView += `<div class='hourly-list'>
-       <div>
-         <div><span>${hour}: </span>${hourlyTemp[i]}</span><span>°C</span></span>
-         <span> ${hourlyHumidity[i]}</span><span>°C</span> 
-          <span>${hourlyTemp[i]}</span><span>°C</span>
-       <span>${hourlyHumidity[i]}</span><span>%</span>
-        <span>${hourlyWindSpeed[i]}</span><span>mph</span></div>
-         </div>
+       
+       
+        const amPm = hour >= 12 ? 'PM' : 'AM';
+      hour = hour%12;
+     
+      
+      hour = hour ? hour: 12;
+         hourlyView += `
+         <div class='hourly-list'>
+       <div class='detail-summary'>
+         <div>${hour} ${amPm}:</div>
+        <div>${hourlyTemp[i]} <span>°C</span></div>
+        <div>${hourlyTemp[i]} <span>icon</span></div>
+       <div>${hourlyHumidity[i]} <span>%</span></div>
+        <div>${hourlyWindSpeed[i]}<span>mph</span></div>
+       </div>
        </div>`
-
+      
       }
-      console.log("hourlyView", hourlyView)
+       const hourlyForcastHeader = `<strong>Hourly Weather in </strong><span>${city}</span>
+       <div> As of ${currHours}:${minutes}</div>
+       <h2>Date:${date}</h2>
+       `
+    
+      //  console.log('h', hourlyForcastHeader)
+     hourlyView = hourlyForcastHeader + hourlyView
+       
+        
        document.querySelector('.daily-weather').innerHTML = `${hourlyView}`
 
  let dateString = ''
@@ -48,11 +68,11 @@ const fetchWeather = async (city) => {
 
 
        
-     let  currMinutes = currDate.getMinutes();
-      const currAmPm = currHours >= 12 ? 'PM' : 'AM';
-        currHours =    currHours < 10 ? '0' + currHours : currHours;
-       currMinutes =  currMinutes < 10 ? '0' + currMinutes : currMinutes;
-      // console.log('curr hours',currHours)
+    //  let  currMinutes = currDate.getMinutes();
+    //   const currAmPm = currHours >= 12 ? 'PM' : 'AM';
+    //     currHours =    currHours < 10 ? '0' + currHours : currHours;
+    //    currMinutes =  currMinutes < 10 ? '0' + currMinutes : currMinutes;
+    //   // console.log('curr hours',currHours)
        
     
       for(let i=currHours; i < hourlyTime.length; i++){
@@ -74,34 +94,8 @@ const fetchWeather = async (city) => {
       // console.log('minutes',minutes)    
 
     
-
-      // Display only the first 12 hours  
-      // if(i < currHours + 12){  
-        
-      //   // hours = hours < 10 ? '0' + hours : hours;
-      //   // minutes = minutes < 10 ? '0' + minutes : minutes; 
-      //   console.log('hours',hours)
-      // console.log('minutes',minutes)    
-      //  // console.log('amPm',amPm)    
-      //  // console.log('time',time)    
-      //   console.log('temp',hourlyTemp[i])    
-      //   console.log('humidity',hourlyHumidity[i])    
-      //   console.log('wind speed',hourlyWindSpeed[i])    
-      //  // console.log('i',i)    
-      //   console.log('currHours',currHours)    
-      //   console.log('currMinutes',currMinutes)    
-      //   console.log('currAmPm',currAmPm)    
-      //    console.log('------------------')      
-
-      // }
-
-       
-    
-    
       dateString = (`At ${hours}: ${minutes} ${amPm}, the temperature is ${hourlyTemp[i]}°C, humidity is ${hourlyHumidity[i]}%, and wind speed is ${hourlyWindSpeed[i]} m/s.`);
      
-      
-
      // console.log('time', new Date(time).toLocaleDateString())
        // console.log(`At ${hourlyTime[i]}, the temperature is ${hourlyTemp[i]}°C, humidity is ${hourlyHumidity[i]}%, and wind speed is ${hourlyWindSpeed[i]} m/s.`);
        //console.log('dateString',dateString)
@@ -116,12 +110,8 @@ const fetchWeather = async (city) => {
          </div>
        </div>`
 
-      
-      // console.log(hourlyList)
+
       }
-
-
-
   const     data = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${API_KEY}&units=metric`);
     return  await data.json();    
 }
@@ -131,7 +121,8 @@ form.addEventListener('submit', function(event) {
     event.preventDefault();
     const city = input.value;
   fetchWeather(city).then(data=>{
-    console.log(data )
+
+     // hourlyForcast(meteoValue)
     const  weatherDescription = data.weather[0].description;
     const  iconCode = data.weather[0].icon;
   let  feelsLike = data.main.feels_like;
@@ -144,7 +135,7 @@ form.addEventListener('submit', function(event) {
    
     const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
     const formattedDate = date.toLocaleDateString(undefined, options);
-    console.log('formattedDate',formattedDate)
+  
     const hour = date.getHours();
     const minutes = date.getMinutes();
    const temparature = data.main.temp;
@@ -194,7 +185,10 @@ form.addEventListener('submit', function(event) {
   converterButton.addEventListener('click',()=>{
     let currentTemp = parseFloat( tempSpan.textContent);
     if(isCelsius){
-      // Convert to Fahrenheit
+      // Convert to Fahrenheit'
+      if(!document.querySelector(".items-list")){
+        
+      }
       const fahrenheitTemp = (currentTemp * 9/5) + 32;
       tempSpan.textContent = fahrenheitTemp.toFixed(2);
       const feelsLikeDoc = document.querySelector('.feels-like-deg')
@@ -206,12 +200,10 @@ form.addEventListener('submit', function(event) {
        const tempMinLow = (lowTemp * 9/5) + 32;
       const highLowTemp = document.querySelector('.weather-info-description p:nth-child(2)');
        
-
      if(document.querySelector(".items-list")){
         const tempHigh = document.querySelector('.temp-high span:nth-child(2)')
         const tempLow = document.querySelector('.temp-low span:nth-child(2)')
-  
-           tempHigh.textContent = `${tempMaxHigh.toFixed(2)}`
+          tempHigh.textContent = `${tempMaxHigh.toFixed(2)}`
           tempLow.textContent = `${tempMinLow.toFixed(2)}`
          // tempHigh.textContent = 
       
@@ -243,7 +235,6 @@ form.addEventListener('submit', function(event) {
      
        
       }
-      
        converterButton.textContent = 'Fahrenheit';
       isCelsius = true;
     }
@@ -343,6 +334,10 @@ const converter=(temp)=>{
     
 }
 
+const hourlyForcast =  (data)=>{
+
+  console.log('hourl data',data)
+}
 // Note: Replace  
 // const YOUR_API_KEY = 'your_openweathermap_api_key_here';
 // with your actual OpenWeatherMap API key.     
