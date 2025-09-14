@@ -3,15 +3,47 @@ const form = document.getElementById('weatherForm');
 const resultDiv = document.getElementById('weatherResult');
 const API_KEY = 'd1e34c8fe7600f6587b90b8e32c0f5f8'
 
+const lat = '52.52'
+const lon = '13.41'
+
+//`https://api.open-meteo.com/v1/forecast?latitude=${currentLat}&longitude=${currentLon}&current=temperature_2m,wind_speed_10m,weathercode&hourly=temperature_2m,relative_humidity_2m,wind_speed_10m,weathercode`
+
+//`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${long}{&current=temperature_2m,wind_speed_10m&hourly=temperature_2m,relative_hum
 
 
+ const getWeatherIcon =(code)=>{
+  const iconMap ={
+     0: "☀️", 1: "🌤️", 2: "⛅", 3: "☁️",
+        45: "🌫️", 48: "🌫️", 51: "🌦️", 53: "🌧️",
+        55: "🌧️", 56: "🌧️", 57: "🌧️", 61: "🌧️",
+        63: "🌧️", 65: "🌧️", 66: "🌧️", 67: "🌧️",
+        71: "🌨️", 73: "🌨️", 75: "❄️", 77: "❄️",
+        80: "🌧️", 81: "🌧️", 82: "🌧️", 85: "🌨️",
+        86: "🌨️", 95: "⛈️", 96: "⛈️", 99: "⛈️"
+  };
+
+  return iconMap[code] || "?";
+ }
 const fetchWeather = async (city) => {
-  const meteoDdata = await fetch("https://api.open-meteo.com/v1/forecast?latitude=52.52&longitude=13.41&current=temperature_2m,wind_speed_10m&hourly=temperature_2m,relative_humidity_2m,wind_speed_10m" );
+  const meteoDdata = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,wind_speed_10m,weathercode&hourly=temperature_2m,relative_humidity_2m,wind_speed_10m,weathercode` );
       let meteoValue = await meteoDdata.json();
+      let hourlyCode = meteoValue.hourly.weathercode
 
-    
-      
-      console.log('met',meteoValue)
+
+   console.log('dsssd',meteoValue)
+   console.log('hour', meteoValue.hourly)
+   console.log('hourlycode', meteoValue.hourly.weathercode)
+
+   // get hourly code then create an url including that code
+    // https.....
+    //then create an img which is src = url 
+   //  
+
+   //const weatherIcon = `http://openweathermap.org/img/wn/${iconCode}.png`
+
+      let currentCode = meteoValue.current.weathercode
+      console.log('curre conde ', currentCode)
+      let codeUrl = `https://raw.githubusercontent.com/basmilius/weather-icons/master/production/fill/all/${currentCode}.svg`
       const hourlyTime = meteoValue.hourly['time'];
       const hourlyTemp = meteoValue.hourly['temperature_2m'];
       const hourlyHumidity = meteoValue.hourly['relative_humidity_2m'];
@@ -23,27 +55,42 @@ const fetchWeather = async (city) => {
      const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
     const formattedDate = currDate.toLocaleDateString(undefined, options);
     let date = formattedDate.substring(0,22)
-
-
-     // console.log('day', currDate.getUTCDate())
+    
       let currHours = currDate.getHours();
        let minutes = currDate.getMinutes()
+         
+        let amPm = currHours >= 12 ? 'PM' : 'AM';
        minutes = minutes < 10 ? "0"+ minutes : minutes
       
        let  hourlyView = ''
-      for(let i = currHours; i< hourlyTime.length/7 ; i++){
+      
+      
+      
+       const hourlyForcastHeaders = `
+       <div class='hourly-forcast-headers'>
+         <div>Hour</div>
+         <div>Temperature</div>
+         <div>Icon</div>
+         <div>Humidity</div>
+         <div>wind speed</div>
+         </div>`
+
+         for(let i = currHours; i< currHours+24 ; i++){
+           console.log('icon ', hourlyCode[i])
+           let houryIcon =`http://openweathermap.org/img/wn/${hourlyCode[1]}.png`
+         
         let hour = hourlyTime[i].substring(11,13)
-       
-       
-        const amPm = hour >= 12 ? 'PM' : 'AM';
+        let amPm = hour >= 12 ? 'PM' : 'AM';
       hour = hour%12;
        hour = hour ? hour: 12;
          hourlyView += `
-      
+       
+  
        <div class='detail-summary' data-set-id="${i}">
+    
          <div>${hour} ${amPm}:</div>
         <div>${hourlyTemp[i]} <span>°C</span></div>
-        <div>${hourlyTemp[i]} <span> icon</span></div>
+        <div><img src="${houryIcon}" alt="${getWeatherIcon(hourlyCode[i])}" class='weather-icon'/></div>
        <div>${hourlyHumidity[i]} <span>%</span></div>
         <div>${hourlyWindSpeed[i]}<span> mph</span></div>
         <div>
@@ -56,12 +103,12 @@ const fetchWeather = async (city) => {
       }
 
 
-       const hourlyForcastHeader = `<strong>Hourly Weather in </strong><span>${city}</span>
-       <div> As of ${currHours}:${minutes}</div>
+       const hourlyForcastTitle = `<strong>Nex 24h  hours forcast in </strong><span>${city}</span>
+       <div> As of ${currHours}:${minutes} ${amPm}</div>
        <h2>${date}</h2>
        `
 
-     hourlyView = hourlyForcastHeader + hourlyView
+     hourlyView =  hourlyForcastTitle + hourlyForcastHeaders  + hourlyView
        document.querySelector('.daily-weather').innerHTML = `${hourlyView}`
 
  let dateString = ''       
@@ -117,14 +164,13 @@ form.addEventListener('submit', function(event) {
        */
      const moreInfo = document.querySelectorAll('.display-more-info')
      const moreInfoArray = Array.from(moreInfo)
-     console.log('mo', moreInfo)
      moreInfoArray.forEach(btn =>{
       btn.addEventListener('click',()=>{
-        console.log('clicked')
-      const daily =    document.querySelector(".detail-summary")
-      
-         console.log('id', daily.dataset.setId)
-        console.log(btn.parentElement)
+        
+        const daily =    document.querySelector(".detail-summary")
+        
+          const  appendDetailToParent = btn.parentNode.parentNode
+        console.log('ap',appendDetailToParent)
         const hourlyMoreInfo  = `<div>
          <div> feelslke</div>
          <div>wind</div>
@@ -133,9 +179,7 @@ form.addEventListener('submit', function(event) {
          <div>low</div>
          <div>lon/div>
          <div>lat</div>
-        </div>`
-      // parent  = btn.parentElement
-        
+        </div>`   
       })
      })
 
@@ -168,7 +212,7 @@ form.addEventListener('submit', function(event) {
     
     resultDiv.innerHTML = `<div class="weather-info">
       <div class='weather-infor-nav'
-     <p>${city}, ${data.sys.country}</p>
+     <p>Showing weather for ${city}, ${data.sys.country}</p>
       <p> As of ${hour}:${minutes} ${amPm}</p>  
       </div>
       <div class='weather-info-details'>
