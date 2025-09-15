@@ -5,6 +5,7 @@ const API_KEY = 'd1e34c8fe7600f6587b90b8e32c0f5f8'
 
 const lat = '52.52'
 const lon = '13.41'
+let refreshPage = 2*60*1000;
 
 //`https://api.open-meteo.com/v1/forecast?latitude=${currentLat}&longitude=${currentLon}&current=temperature_2m,wind_speed_10m,weathercode&hourly=temperature_2m,relative_humidity_2m,wind_speed_10m,weathercode`
 
@@ -68,10 +69,10 @@ const fetchWeather = async (city) => {
       
        const hourlyForcastHeaders = `
        <div class='hourly-forcast-headers'>
-         <div>Hour</div>
-         <div>Temperature</div>
+         <div>Time</div>
+         <div>Temperature(°C)</div>
          <div>Icon</div>
-         <div>Humidity</div>
+         <div>Humidity(%)</div>
          <div>wind speed</div>
          </div>`
 
@@ -89,10 +90,10 @@ const fetchWeather = async (city) => {
        <div class='detail-summary' data-set-id="${i}">
     
          <div>${hour} ${amPm}:</div>
-        <div>${hourlyTemp[i]} <span>°C</span></div>
+        <div>${hourlyTemp[i]} <span>°</span></div>
         <div><img src="${houryIcon}" alt="${getWeatherIcon(hourlyCode[i])}" class='weather-icon'/></div>
        <div>${hourlyHumidity[i]} <span>%</span></div>
-        <div>${hourlyWindSpeed[i]}<span> mph</span></div>
+        <div>${hourlyWindSpeed[i]}<span>m/s</span></div>
         <div>
         <button class='display-more-info' id='${i}'>+</button>
         </div>
@@ -103,7 +104,7 @@ const fetchWeather = async (city) => {
       }
 
 
-       const hourlyForcastTitle = `<strong>Nex 24h  hours forcast in </strong><span>${city}</span>
+       const hourlyForcastTitle = `<strong class='next-24-hour'>Next 24h  hours forcast in </strong><span class='next-24-hour'>${city}</span>
        <div> As of ${currHours}:${minutes} ${amPm}</div>
        <h2>${date}</h2>
        `
@@ -115,7 +116,6 @@ const fetchWeather = async (city) => {
     
       for(let i=currHours; i < hourlyTime.length; i++){
       let time = hourlyTime[i]
-     
           const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }
 
 // console.log('t',hourlyTime[i].toLocaleDateString(undefined, options))
@@ -372,25 +372,31 @@ const seeMorDetails = (data) => {
  resultDiv.appendChild(ul);
 
 }
-let isCelsius = true;
-const converter=(temp)=>{
-  if(isCelsius){
-    // Convert to Fahrenheit
-    const fahrenheitTemp = (temp * 9/5) + 32;
-    return fahrenheitTemp.toFixed(2);
+
+// let isCelsius = true;
+// const converter=(temp)=>{
+//   if(isCelsius){
+//     // Convert to Fahrenheit
+//     const fahrenheitTemp = (temp * 9/5) + 32;
+//     return fahrenheitTemp.toFixed(2);
    
-  }else{
+//   }else{
  
-    const celsiusTemp = (temp - 32) * 5/9;
-   return celsiusTemp.toFixed(2);
+//     const celsiusTemp = (temp - 32) * 5/9;
+//    return celsiusTemp.toFixed(2);
     
-  }
+//   }
     
-}
+// }
 
 const hourlyForcast =  async(data)=>{
 
 }
+
+//WILL COMEBAC TO SET INTERVAL
+// setInterval(
+//   fetchWeather, (refreshPage));
+
 // Note: Replace  
 // const YOUR_API_KEY = 'your_openweathermap_api_key_here';
 // with your actual OpenWeatherMap API key.     

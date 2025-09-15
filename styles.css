@@ -2,13 +2,20 @@ body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
-   background-color: rgb(77, 198, 246)
+   /* background-color: rgb(77, 198, 246) */
+   background-color: #F0F4F8;
 
 }
 #title{
     text-align: center;
+    color: #0177B6;
 }
 
+
+.next-24-hour{
+    color:#0177B6 ;
+    font-size: 1.2rem;
+}
 #weatherForm{
     display: flex;
     flex-direction: row;
@@ -95,6 +102,10 @@ a button:hover{
 .weather-info{
    margin-top: 10px;
     border: 2px solid black;
+    box-shadow:  5px 5px #FFFFFF;
+    padding: 20px;
+    color: black;
+
 }
 .weather-infor-nav{
        background-color: rgb(31, 160, 211);;
@@ -115,7 +126,8 @@ a button:hover{
    justify-content:flex-start;
    align-items: center;
 padding: 0;
-margin: 0;
+margin-left: 10px;
+
 }
 
   #temp{
@@ -124,20 +136,20 @@ margin: 0;
     /* margin-right: 5px; */
     padding: 0px;
     margin: 0;
-    color: white;
+    
   }
     .deg-cel{
         font-size: 3.5rem;
         font-weight: bold;
 
-        color: white;
+    
         padding: 0px;
     }
     #deg-fah{
         font-size: 1.2rem;
         font-weight: bold;
         margin-right: 5px;
-        color: white;
+      
         padding: 0px;
     }
     #icon{
@@ -163,13 +175,19 @@ margin: 0;
 
     }
 
-.weather-info-description{
-    
+    .weather-info{
+        margin: 20px;
+        padding: 0;
+        border: 1px solid #FFFFFF;  
+        box-shadow: 2px 3px #f2f1f1;
+    }
+.weather-info-description{ 
    display: flex;
    font-size: 1.5rem;
     font-weight: bold;
-    color: white;
     justify-content: space-between;
+    
+    margin-left:  10px;
    
 }
 
@@ -177,6 +195,8 @@ margin: 0;
     margin: 0;
     padding: 5px;
     padding-top: 0px;
+    
+    
     
 }
 
@@ -284,9 +304,13 @@ color: black;
 }
 
 .daily-weather{
-    border-top: 2px solid gray;
-    margin-top: 10px;
-    padding: 10px;
+    margin: 10px;
+    border: 2px solid #0177B6;
+    padding: 30px;
+    box-shadow:  5px 5px rgba(0, 0, 0, .5);
+    background-color: #FFFFFF;
+
+    
 }
 
 .detail-summary{
@@ -294,19 +318,99 @@ color: black;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
+    border-bottom: 1px solid #F0F4F8;
+    font-size: 1rem;
+    padding: 10px;
+    margin: 5px;
+    
+
 }
+.detail-summary:hover{
+    background-color: #F0F4F8;
+}
+
 
 .hourly-forcast-headers{
     display: flex;
     justify-content: space-between;
     align-items: center;
     width: 85%;
-    font-size: 1.5rem;
+    font-size: 1rem;
     margin-bottom: .4rem;
+    background-color: #C9F0F8;
+   
+    padding: 5px ;
+
 }
 
 .weather-icon{
     height: 50px;
     width: 40px;
-border: 2px solid red
+
 }
+
+
+
+.foating-input{
+    position: relative;
+    border: 2px solid rgb(173, 161, 161);
+   
+}
+
+
+.input{
+    padding: 10px ;
+    outline: none;
+}
+
+.city-name{
+    position: absolute;
+    top: 50%;
+    left: 10px;
+    transform: translateY(-50%);
+    font-size: 16px;
+    transition: all 0.2s ease-out;
+    /* pointer-events: none; */
+
+}
+
+/* .input:focus+.city-name, 
+.input:not(:placeholder-shown)+.city-name{
+    top: 0;
+    transform: translateY(-50%) ;
+    transform: translateY(-50%) scale(.8);
+     font-size: 15px;
+     left: 5px;
+     padding: 0 5px;
+     background-color: #fff;
+     border: 2px solid red;
+     color: #337ab7;
+     
+
+} */
+ /* can use tilt instead of +  */
+
+.input:focus~.city-name,
+.input:valid~.city-name{
+    top: 0;
+    left: 7px;
+    transform: translateY(-50%);
+    background-color: #fff;
+    font-size: 12px;
+    /* border: 2px solid red; */
+    padding: 0 5px;
+
+}
+
+.submit-btn{
+    padding: 10px;
+   font-size: 1rem;
+   cursor: pointer;
+   border-radius: 5px;
+}
+
+.submit-btn:hover{
+    background-color: #fff;
+}
+
+
