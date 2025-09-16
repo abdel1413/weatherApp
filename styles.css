@@ -6,6 +6,21 @@ body {
    background-color: #F0F4F8;
 
 }
+.header-title{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 10px;
+    position: fixed;
+    left: 0;
+    top: 0;
+    /* z-index: 1; */
+    background-color: #F0F4F8;
+   
+
+}
 #title{
     text-align: center;
     color: #0177B6;
@@ -25,7 +40,7 @@ body {
 
 }
 .menu-bar{
- 
+   border: 2px solid green;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -34,14 +49,12 @@ body {
     
     height: 40px;
     margin-top: 5px;
-     /* position: absolute;
-    top: 0;
-    right: 0;
-    z-index: 0;
-    width: 100%;
-  margin-bottom: 100px;
-  clear: both; */
+}
 
+#weather-result{
+ 
+    margin-top: 170px;
+    
 }
 
 path{
@@ -104,20 +117,11 @@ a button:hover{
     border: 2px solid black;
     box-shadow:  5px 5px #FFFFFF;
     padding: 20px;
-    color: black;
+  
+    
 
 }
-.weather-infor-nav{
-       background-color: rgb(31, 160, 211);;
-        color: white;
-        padding: 5px;
-        text-align: center;
-        font-size: 1.1rem;
-        font-weight: bold;  
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-}
+
 
 
 
@@ -127,6 +131,7 @@ a button:hover{
    align-items: center;
 padding: 0;
 margin-left: 10px;
+
 
 }
 
@@ -141,8 +146,6 @@ margin-left: 10px;
     .deg-cel{
         font-size: 3.5rem;
         font-weight: bold;
-
-    
         padding: 0px;
     }
     #deg-fah{
@@ -175,12 +178,14 @@ margin-left: 10px;
 
     }
 
-    .weather-info{
+    .weather-info, .items-list{
         margin: 20px;
         padding: 0;
         border: 1px solid #FFFFFF;  
+        background-color: #FFFFFF;
         box-shadow: 2px 3px #f2f1f1;
     }
+
 .weather-info-description{ 
    display: flex;
    font-size: 1.5rem;
@@ -188,6 +193,7 @@ margin-left: 10px;
     justify-content: space-between;
     
     margin-left:  10px;
+
    
 }
 
@@ -197,11 +203,10 @@ margin-left: 10px;
     padding-top: 0px;
     
     
-    
+ 
 }
 
 .weather-info-description button{
-
     cursor: pointer;
     display: flex;
     align-items: center;
@@ -222,20 +227,20 @@ margin-left: 10px;
 }
 .weather-info-description button:hover{
     background-color: rgb(22, 147, 197);;
+    border: none;
    
 }   
 
-/* .items-list{
-    list-style-type: none;
-    padding: 0;
-    margin: 0;
+.display-more-info{
+    border: none;
    
-    margin-top: 10px;
-    width: 50%;
-    margin-left: auto;
-    margin-right: auto;
-    background-color: rgb(77, 198, 246);
-} */
+}
+
+.display-more-info:hover{
+    background-color: rgb(60, 152, 189);
+    border: 1px solid rgb(60, 152, 189);
+}
+
 
 .pres-sunrise-set{
     display: flex;
@@ -269,13 +274,17 @@ margin-left: 10px;
 color: black;
 
 }
+
+
 .details-divider{
    
     display: flex;
     justify-content:space-between;
     align-items: center;
     padding: 0;
+   
 }
+
 
 
 .info-divider{
@@ -284,6 +293,7 @@ color: black;
     padding: 0;
     margin: 10px;
      background-color: transparent;
+    
     
 }
 
@@ -295,25 +305,28 @@ color: black;
     /* font-size: 1rem; */
     /* font-weight: bold; */
     /* color: white; */
-    background-color: rgb(31, 160, 211);
+    /* background-color: rgb(31, 160, 211); */
     border-bottom: 1px solid rgb(207, 205, 205);
+    
+    padding: 10px;
    
-    margin-left: 0;
-    padding: 5px;
-   
+}
+.sub-info:hover{
+ background-color: #F0F4F8;
 }
 
 .daily-weather{
     margin: 10px;
-    border: 2px solid #0177B6;
+    /* border: 2px solid #0177B6; */
     padding: 30px;
-    box-shadow:  5px 5px rgba(0, 0, 0, .5);
     background-color: #FFFFFF;
+    box-shadow:  5px 8px #e4e4e2;
+   
 
     
 }
 
-.detail-summary{
+.detail-summary,.hourly-forcast-headers{
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -330,18 +343,12 @@ color: black;
 }
 
 
-.hourly-forcast-headers{
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 85%;
-    font-size: 1rem;
-    margin-bottom: .4rem;
-    background-color: #C9F0F8;
-   
-    padding: 5px ;
+ .hourly-forcast-headers{
 
-}
+    background-color: #0177B6;
+    background-color: #1FA0D3;
+
+} 
 
 .weather-icon{
     height: 50px;

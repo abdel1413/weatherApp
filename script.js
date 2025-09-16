@@ -1,6 +1,6 @@
 const input = document.getElementById('cityInput');
 const form = document.getElementById('weatherForm');
-const resultDiv = document.getElementById('weatherResult');
+const resultDiv = document.getElementById('weather-result');
 const API_KEY = 'd1e34c8fe7600f6587b90b8e32c0f5f8'
 
 const lat = '52.52'
@@ -58,11 +58,13 @@ const fetchWeather = async (city) => {
     let date = formattedDate.substring(0,22)
     
       let currHours = currDate.getHours();
+
        let minutes = currDate.getMinutes()
          
         let amPm = currHours >= 12 ? 'PM' : 'AM';
        minutes = minutes < 10 ? "0"+ minutes : minutes
-      
+       currHours = currHours%12;
+       currHours = currHours ? currHours: 12;
        let  hourlyView = ''
       
       
@@ -74,6 +76,7 @@ const fetchWeather = async (city) => {
          <div>Icon</div>
          <div>Humidity(%)</div>
          <div>wind speed</div>
+         <div>More</div>
          </div>`
 
          for(let i = currHours; i< currHours+24 ; i++){
@@ -83,13 +86,15 @@ const fetchWeather = async (city) => {
         let hour = hourlyTime[i].substring(11,13)
         let amPm = hour >= 12 ? 'PM' : 'AM';
       hour = hour%12;
+      console.log('hour', hour)
        hour = hour ? hour: 12;
+       
          hourlyView += `
        
   
        <div class='detail-summary' data-set-id="${i}">
     
-         <div>${hour} ${amPm}:</div>
+         <div>${hour}:${minutes} ${amPm}:</div>
         <div>${hourlyTemp[i]} <span>°</span></div>
         <div><img src="${houryIcon}" alt="${getWeatherIcon(hourlyCode[i])}" class='weather-icon'/></div>
        <div>${hourlyHumidity[i]} <span>%</span></div>
@@ -104,7 +109,7 @@ const fetchWeather = async (city) => {
       }
 
 
-       const hourlyForcastTitle = `<strong class='next-24-hour'>Next 24h  hours forcast in </strong><span class='next-24-hour'>${city}</span>
+       const hourlyForcastTitle = `<strong class='next-24-hour'>Next 24 hours forcast in </strong><span class='next-24-hour'>${city}</span>
        <div> As of ${currHours}:${minutes} ${amPm}</div>
        <h2>${date}</h2>
        `
@@ -197,7 +202,7 @@ form.addEventListener('submit', function(event) {
     const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
     const formattedDate = date.toLocaleDateString(undefined, options);
   
-    const hour = date.getHours();
+    let hour = date.getHours();
     const minutes = date.getMinutes();
    const temparature = data.main.temp;
    const highTemp = data.main.temp_max;
@@ -208,6 +213,8 @@ form.addEventListener('submit', function(event) {
     hour < 10 ? '0' + hour : hour;
     minutes < 10 ? '0' + minutes : minutes; 
     const amPm = hour >= 12 ? 'PM' : 'AM'; 
+    hour = hour %12;
+    hour = hour? hour: 12
 
     
     resultDiv.innerHTML = `<div class="weather-info">
