@@ -12,7 +12,7 @@ body {
     justify-content: center;
     flex-direction: column;
     align-items: center;
-    margin-top: 10px;
+    
     position: fixed;
     left: 0;
     top: 0;
@@ -40,7 +40,7 @@ body {
 
 }
 .menu-bar{
-   border: 2px solid green;
+  
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -71,54 +71,13 @@ path{
  
 
  }
- .menu-logo {
- border: 2px solid red
- 
 
- }
- 
-.heart-button{
-    background-color: transparent;
-     align-self: center;
-    cursor: pointer;
-    width: 45px;
-    height: 40px;
-    border: 2px solid rgb(34, 134, 174);
-    border: none;
-   
-  
-}
-.heart-button:hover{
-    background-color: rgb(22, 147, 197);;
-    border: none
 
-  
-}
-.heart-button svg{
-
-     width: 20px;
-    /* height: 20px;  */
-    /* padding-bottom: 15px; */
-    fill: rgb(49, 129, 160);;
-}
-a button{
-    height: 40px;
-    border: 2px solid rgb(31, 160, 211);;
-    font-size: 1.1rem;
-    padding: 10px;
-   background-color: rgb(31, 160, 211);;
-}
-a button:hover{
-    background-color: rgb(22, 147, 197);;
-   
-}
 .weather-info{
    margin-top: 10px;
     border: 2px solid black;
     box-shadow:  5px 5px #FFFFFF;
     padding: 20px;
-  
-    
 
 }
 
@@ -138,7 +97,6 @@ margin-left: 10px;
   #temp{
     font-size: 3.5rem;
     font-weight: bold;
-    /* margin-right: 5px; */
     padding: 0px;
     margin: 0;
     
@@ -161,8 +119,6 @@ margin-left: 10px;
         padding: 0;
         align-items: left;
         margin-left: 0;
-        /* width: 100px;
-        height: 80px; */
         padding-bottom: 0px;
         padding: 0px;
 
@@ -178,9 +134,9 @@ margin-left: 10px;
 
     }
 
-    .weather-info, .items-list{
+    .weather-info, .items-list, .daily-forcast{
         margin: 20px;
-        padding: 0;
+        padding: 10px;
         border: 1px solid #FFFFFF;  
         background-color: #FFFFFF;
         box-shadow: 2px 3px #f2f1f1;
@@ -188,7 +144,7 @@ margin-left: 10px;
 
 .weather-info-description{ 
    display: flex;
-   font-size: 1.5rem;
+   font-size: 1.2rem;
     font-weight: bold;
     justify-content: space-between;
     
@@ -201,6 +157,7 @@ margin-left: 10px;
     margin: 0;
     padding: 5px;
     padding-top: 0px;
+    font-size: 1.2rem;
     
     
  
@@ -228,17 +185,20 @@ margin-left: 10px;
 .weather-info-description button:hover{
     background-color: rgb(22, 147, 197);;
     border: none;
-   
+    color: #FFFFFF;
 }   
 
 .display-more-info{
     border: none;
-   
+   /* font-size: 1.2rem; */
 }
 
 .display-more-info:hover{
     background-color: rgb(60, 152, 189);
     border: 1px solid rgb(60, 152, 189);
+   color: #FFFFFF;
+   /* font-size: 1.2rem; */
+   
 }
 
 
@@ -315,16 +275,12 @@ color: black;
  background-color: #F0F4F8;
 }
 
-.daily-weather{
+/* .daily-weather{
     margin: 10px;
-    /* border: 2px solid #0177B6; */
     padding: 30px;
     background-color: #FFFFFF;
-    box-shadow:  5px 8px #e4e4e2;
-   
-
-    
-}
+    box-shadow:  5px 8px #e4e4e2;  
+} */
 
 .detail-summary,.hourly-forcast-headers{
     display: flex;
@@ -334,7 +290,7 @@ color: black;
     border-bottom: 1px solid #F0F4F8;
     font-size: 1rem;
     padding: 10px;
-    margin: 5px;
+   
     
 
 }
@@ -421,3 +377,96 @@ color: black;
 }
 
 
+@media(max-width: 768px){
+    body{
+        font-size: 0.7rem;
+    }
+    .info-divider,.sub-info,
+     .details-divider,
+     .hourly-forcast-headers{
+        font-size:.8rem;
+    
+    }
+    .feels-like-deg, .deg-cel,#temp{
+        font-size: 1.5rem;
+       
+    }
+
+    .weather-info-nav{
+        
+        font-size: 1rem;
+      
+        
+    }
+     .weather-info-nav  .current-time{
+       font-size: .8rem;
+       margin-top: 0;
+    
+      }
+
+      .weather-info-nav .showing-weather{
+        margin-bottom: 0;
+          color: #0177B6;
+      }
+    .pres-sunrise-set{
+        
+        padding-top: 0;
+        align-items: start;
+    }
+
+    .feels-like-text{
+     width: 150px;
+    
+     text-align: center;
+     font-size: 1rem;
+   
+    }
+ .sunrise , .sunset{
+
+   font-size: 13px;
+   padding-top: 0px;
+   align-items:start;
+ }
+
+ .sunrise-set{
+
+ 
+    
+ }
+
+    .hourly-forcast-headers div{
+       font-size: .7rem;
+    }
+     /* .submit-btn{
+      padding: 5px;
+      font-size: 1rem;
+    } */
+
+       .weather-info-details > .converter > button{
+           display: flex;
+           float: right;
+            margin-left: 70px;
+         
+       
+       }
+       .detail-summary div{
+        font-size: .7rem;
+       }
+     
+     
+
+    div input {
+       
+      padding:0;
+
+    }
+.city-name {
+      font-size: 1rem;
+      
+      
+  }
+  .items-list p{
+    font-size: 1rem;
+  }
+    
+}

@@ -71,12 +71,12 @@ const fetchWeather = async (city) => {
       
        const hourlyForcastHeaders = `
        <div class='hourly-forcast-headers'>
-         <div>Time</div>
-         <div>Temperature(°C)</div>
-         <div>Icon</div>
-         <div>Humidity(%)</div>
-         <div>wind speed</div>
-         <div>More</div>
+         <div class='time'>Time</div>
+         <div class='temp'>Temp(°C)</div>
+         <div class='icon'>Icon</div>
+         <div class='humidity'>Humidity(%)</div>
+         <div class='wind'>wind</div>
+         <div class='more'>More</div>
          </div>`
 
          for(let i = currHours; i< currHours+24 ; i++){
@@ -218,9 +218,9 @@ form.addEventListener('submit', function(event) {
 
     
     resultDiv.innerHTML = `<div class="weather-info">
-      <div class='weather-infor-nav'
-     <p>Showing weather for ${city}, ${data.sys.country}</p>
-      <p> As of ${hour}:${minutes} ${amPm}</p>  
+      <div class='weather-info-nav'>
+         <p class='showing-weather'>Showing weather for ${city}, ${data.sys.country}</p>
+        <p class='current-time'> As of ${hour}:${minutes} ${amPm}</p>  
       </div>
       <div class='weather-info-details'>
        <span id='temp'>${temparature}</span>
@@ -346,13 +346,13 @@ const seeMorDetails = (data) => {
    <p>Weather today in ${data.name}, ${data.sys.country}</p>
 
    <div class='pres-sunrise-set'>
-      <div class='feels-like'> <div>Feels Like:</div>
+      <div class='feels-like'> <div class='feels-like-text'>Feels Like:</div>
       <div ><span class='feels-like-deg'>${(feels_like)}</span><span class='deg-cel deg'>°</span>
       </div>
       </div>
-      <div>
-      <span>Sunrise: ${new Date(data.sys.sunrise * 1000).toLocaleTimeString()}</span> |
-      <span>Sunset: ${new Date(data.sys.sunset * 1000).toLocaleTimeString()}</span>
+      <div class='sunrise-set'>
+      <span class='sunrise'>Sunrise: ${new Date(data.sys.sunrise * 1000).toLocaleTimeString()}</span> |
+      <span class='sunset'>Sunset: ${new Date(data.sys.sunset * 1000).toLocaleTimeString()}</span>
       </div>
   </div> 
   <div class='details-divider'> 
