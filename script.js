@@ -433,14 +433,14 @@ const seeMorDetails = (data) => {
  
  const resp = await fetch(url)
  const respons = await resp.json()
- console.log("res", respons)
+ 
  const hourly  = respons.hourly.slice(0, 24)
   
     let hourlyList =``
    let hourlyView = ``
 
     hourly.forEach((hour,i) =>{
-      console.log('h',hour, i)
+     
       const date = new Date(hour.dt *1000)
       let hours = date.getHours();
      let minutes = date.getMinutes()
@@ -460,9 +460,7 @@ const seeMorDetails = (data) => {
       const feelsLike = hour.feels_like
       const windSpeed = hour.wind_speed;
       const weatherIcon = `http://openweathermap.org/img/wn/${icon}.png`
-      console.log('temp',temp, 'hum', humidity, 'feel', feelsLike, 'wid', windSpeed)
-      
-
+   
        hourlyList += `<div class='hourly-list'>
        <div>
          <span>${hours}</span>${description}</span><span>°C</span></span>
@@ -501,16 +499,7 @@ const seeMorDetails = (data) => {
        
       
       
-       const hourlyForcastHeaders = `
-       <div class='hourly-forcast-headers'>
-         <div class='time'>Time</div>
-         <div class='temp'>Temp(°C)</div>
-         <div class='icon'>Icon</div>
-         <div class='humidity'>Humidity(%)</div>
-         <div class='wind'>wind</div>
-         <div class='more'>More</div>
-         </div>`
-
+       
 //          for(let i = currHours; i< currHours+24 ; i++){
 //           // console.log('icon ', hourlyCode[i])
 //            let houryIcon =`http://openweathermap.org/img/wn/${hourlyCode[1]}.png`
@@ -558,9 +547,20 @@ const seeMorDetails = (data) => {
    
       
   })
+
+  const hourlyForcastHeaders = `
+       <div class='hourly-forcast-headers'>
+         <div class='time'>Time</div>
+         <div class='temp'>Temp(°C)</div>
+         <div class='icon'>Icon</div>
+         <div class='humidity'>Humidity(%)</div>
+         <div class='wind'>wind</div>
+         <div class='more'>More</div>
+         </div>`
+
+      
   
-  
-   document.querySelector('.daily-weather').innerHTML = `${hourlyView}`
+   document.querySelector('.daily-weather').innerHTML = `${ hourlyForcastHeaders+hourlyView}`
 }
 
  
