@@ -3,14 +3,9 @@ const form = document.getElementById('weatherForm');
 const resultDiv = document.getElementById('weather-result');
 const API_KEY = 'd1e34c8fe7600f6587b90b8e32c0f5f8'
 
-const lat = '52.52'
 const lon = '13.41'
+const lat = '52.52'
 let refreshPage = 2*60*1000;
-
-//`https://api.open-meteo.com/v1/forecast?latitude=${currentLat}&longitude=${currentLon}&current=temperature_2m,wind_speed_10m,weathercode&hourly=temperature_2m,relative_humidity_2m,wind_speed_10m,weathercode`
-
-//`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${long}{&current=temperature_2m,wind_speed_10m&hourly=temperature_2m,relative_hum
-
 
  const getWeatherIcon =(code)=>{
   const iconMap ={
@@ -25,134 +20,27 @@ let refreshPage = 2*60*1000;
 
   return iconMap[code] || "?";
  }
-const fetchWeather = async (city) => {
-  const meteoDdata = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,wind_speed_10m,weathercode&hourly=temperature_2m,relative_humidity_2m,wind_speed_10m,weathercode` );
-      let meteoValue = await meteoDdata.json();
-      let hourlyCode = meteoValue.hourly.weathercode
-
-
-   console.log('dsssd',meteoValue)
-   console.log('hour', meteoValue.hourly)
-   console.log('hourlycode', meteoValue.hourly.weathercode)
-
-   // get hourly code then create an url including that code
-    // https.....
-    //then create an img which is src = url 
-   //  
-
-   //const weatherIcon = `http://openweathermap.org/img/wn/${iconCode}.png`
-
-      let currentCode = meteoValue.current.weathercode
-      console.log('curre conde ', currentCode)
-      let codeUrl = `https://raw.githubusercontent.com/basmilius/weather-icons/master/production/fill/all/${currentCode}.svg`
-      const hourlyTime = meteoValue.hourly['time'];
-      const hourlyTemp = meteoValue.hourly['temperature_2m'];
-      const hourlyHumidity = meteoValue.hourly['relative_humidity_2m'];
-      const hourlyWindSpeed = meteoValue.hourly['wind_speed_10m'];
-    
-      
-
-       const currDate = new Date();
-     const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-    const formattedDate = currDate.toLocaleDateString(undefined, options);
-    let date = formattedDate.substring(0,22)
-    
-      let currHours = currDate.getHours();
-
-       let minutes = currDate.getMinutes()
-         
-        let amPm = currHours >= 12 ? 'PM' : 'AM';
-       minutes = minutes < 10 ? "0"+ minutes : minutes
-       currHours = currHours%12;
-       currHours = currHours ? currHours: 12;
-       let  hourlyView = ''
-      
-      
-      
-       const hourlyForcastHeaders = `
-       <div class='hourly-forcast-headers'>
-         <div class='time'>Time</div>
-         <div class='temp'>Temp(°C)</div>
-         <div class='icon'>Icon</div>
-         <div class='humidity'>Humidity(%)</div>
-         <div class='wind'>wind</div>
-         <div class='more'>More</div>
-         </div>`
-
-         for(let i = currHours; i< currHours+24 ; i++){
-           console.log('icon ', hourlyCode[i])
-           let houryIcon =`http://openweathermap.org/img/wn/${hourlyCode[1]}.png`
-         
-        let hour = hourlyTime[i].substring(11,13)
-        let amPm = hour >= 12 ? 'PM' : 'AM';
-      hour = hour%12;
-      console.log('hour', hour)
-       hour = hour ? hour: 12;
-       
-         hourlyView += `
-       
+const getWeather = async (city) => {
+  let response = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${API_KEY}&units=metric`);
+      let responseData = await response.json();
+      const lat = responseData.coord.lat;
+      const lon = responseData.coord.lon;
   
-       <div class='detail-summary' data-set-id="${i}">
-    
-         <div>${hour}:${minutes} ${amPm}:</div>
-        <div>${hourlyTemp[i]} <span>°</span></div>
-        <div><img src="${houryIcon}" alt="${getWeatherIcon(hourlyCode[i])}" class='weather-icon'/></div>
-       <div>${hourlyHumidity[i]} <span>%</span></div>
-        <div>${hourlyWindSpeed[i]}<span>m/s</span></div>
-        <div>
-        <button class='display-more-info' id='${i}'>+</button>
-        </div>
-       </div>
-      
-       `
-      
-      }
-
-
-       const hourlyForcastTitle = `<strong class='next-24-hour'>Next 24 hours forcast in </strong><span class='next-24-hour'>${city}</span>
-       <div> As of ${currHours}:${minutes} ${amPm}</div>
-       <h2>${date}</h2>
-       `
-
-     hourlyView =  hourlyForcastTitle + hourlyForcastHeaders  + hourlyView
-       document.querySelector('.daily-weather').innerHTML = `${hourlyView}`
+     
+     let h =  getHourlyForecast(lat, lon)
 
  let dateString = ''       
     
-      for(let i=currHours; i < hourlyTime.length; i++){
-      let time = hourlyTime[i]
-          const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }
-
-// console.log('t',hourlyTime[i].toLocaleDateString(undefined, options))
-
-     
-      const date = new Date(time); 
-      let hours = currDate.getHours();
-      let minutes = currDate.getMinutes();
-      const amPm = hours >= 12 ? 'PM' : 'AM'; 
-      hours = hours % 12;
-      hours = hours ? hours : 12; // the hour '0' should be '12'
-      
-  
-
     
-      dateString = (`At ${hours}: ${minutes} ${amPm}, the temperature is ${hourlyTemp[i]}°C, humidity is ${hourlyHumidity[i]}%, and wind speed is ${hourlyWindSpeed[i]} m/s.`);
-     
- 
-       const hourlyList = `<div class='hourly-list'>
-       <div>
-         <span>${hours}:</span>${hourlyTemp[i]}</span><span>°C</span></span>
-          <span>${hourlyHumidity[i]}</span><span>°C</span>
-          <span>${hourlyTemp[i]}</span><span>°C</span>
-          <span>${hourlyHumidity[i]}</span><span>%</span>
-          <span>${hourlyWindSpeed[i]}</span><span>m/s.</span>
-         </div>
-       </div>`
 
 
-      }
-  const     data = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${API_KEY}&units=metric`);
-    return  await data.json();    
+
+   const url =`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${API_KEY}&units=metric`    
+  const     res = await fetch(url);
+  const data = await response.json(); 
+    
+  console.log('data', data)
+  return data
 }
 
 
@@ -162,8 +50,9 @@ form.addEventListener('submit', function(event) {
 
 
 
-  fetchWeather(city).then(data=>{
-/**
+  getWeather(city).then(data=>{
+
+/*
        * display: hour - temp - icon - wind
        * more info: feellike-  wind-  humidity -high -low - long- lat
        */
@@ -189,9 +78,12 @@ form.addEventListener('submit', function(event) {
      })
 
      // hourlyForcast(meteoValue)
-    const  weatherDescription = data.weather[0].description;
-    const  iconCode = data.weather[0].icon;
-  let  feelsLike = data.main.feels_like;
+     console.log('hourly forcase')
+     console.log('data', data)
+  //   const  weatherDescription = data.weather[0].description;
+
+  //   const  iconCode = data.weather[0].icon;
+  // let  feelsLike = data.main.feels_like;
   
  //const { humidity, pressure, feels_like, temp_max, temp_min} = data.main
   
@@ -396,8 +288,112 @@ const seeMorDetails = (data) => {
     
 // }
 
-const hourlyForcast =  async(data)=>{
+const getHourlyForecast =  async(lon, lat)=>{
+ console.log( lon, lat);
+ const url = `https://api.openweathermap.org/data/3.0/onecall?lat=${lat}&lon=${lon}&exclude=current,minutely,daily,alerts&units=metric&appid=${API_KEY}`
+ console.log("url", url)
+ const resp = await fetch(url)
+ const respons = await resp.json()
+ const hourly  = respons.hourly.slice(0, 24)
+ 
+    hourly.forEach(hour =>{
+      
+      const date = new Date(hour.dt *1000)
+      const hours = date.getHours();
+      const minutes = date.getMinutes()
+  
+      let description= hour.weather[0].description;
+      let icon = hour.weather[0].icon
+     
 
+       let amPm = hours >= 12 ? 'PM' : 'AM';
+       minutes = minutes < 10 ? "0"+ minutes : minutes
+      hours = hours%12;
+      hours = hours ?hours: 12;
+      console.log(hours, minutes, amPm)
+    
+//
+
+/* 
+
+    
+      
+
+    const hourlyList = `<div class='hourly-list'>
+       <div>
+         <span>${hours}:</span>${hourlyTemp[i]}</span><span>°C</span></span>
+          <span>${hourlyHumidity[i]}</span><span>°C</span>
+          <span>${hourlyTemp[i]}</span><span>°C</span>
+          <span>${hourlyHumidity[i]}</span><span>%</span>
+          <span>${hourlyWindSpeed[i]}</span><span>m/s.</span>
+         </div>
+       </div>`
+
+         
+       
+       let  hourlyView = ''
+      
+      
+      
+       const hourlyForcastHeaders = `
+       <div class='hourly-forcast-headers'>
+         <div class='time'>Time</div>
+         <div class='temp'>Temp(°C)</div>
+         <div class='icon'>Icon</div>
+         <div class='humidity'>Humidity(%)</div>
+         <div class='wind'>wind</div>
+         <div class='more'>More</div>
+         </div>`
+
+         for(let i = currHours; i< currHours+24 ; i++){
+          // console.log('icon ', hourlyCode[i])
+           let houryIcon =`http://openweathermap.org/img/wn/${hourlyCode[1]}.png`
+         
+        let hour = hourlyTime[i].substring(11,13)
+        let amPm = hour >= 12 ? 'PM' : 'AM';
+      hour = hour%12;
+//console.log('hour', hour)
+       hour = hour ? hour: 12;
+       
+         hourlyView += `
+       
+  
+       <div class='detail-summary' data-set-id="${i}">
+    
+         <div>${hour}:${minutes} ${amPm}:</div>
+        <div>${hourlyTemp[i]} <span>°</span></div>
+        <div><img src="${houryIcon}" alt="${getWeatherIcon(hourlyCode[i])}" class='weather-icon'/></div>
+       <div>${hourlyHumidity[i]} <span>%</span></div>
+        <div>${hourlyWindSpeed[i]}<span>m/s</span></div>
+        <div>
+        <button class='display-more-info' id='${i}'>+</button>
+        </div>
+       </div>
+      
+       `
+      
+      }
+
+
+       const hourlyForcastTitle = `<strong class='next-24-hour'>Next 24 hours forcast in </strong><span class='next-24-hour'>${city}</span>
+       <div> As of ${currHours}:${minutes} ${amPm}</div>
+       <h2>${date}</h2>
+       `
+
+     hourlyView =  hourlyForcastTitle + hourlyForcastHeaders  + hourlyView
+       document.querySelector('.daily-weather').innerHTML = `${hourlyView}`
+
+       */
+
+
+
+       // get hourly code then create an url including that code
+    // https.....
+    //then create an img which is src = url   
+   const weatherIcon = `http://openweathermap.org/img/wn/${icon}.png`
+   
+      
+    })
 }
 
 //WILL COMEBAC TO SET INTERVAL
