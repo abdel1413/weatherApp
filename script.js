@@ -254,7 +254,13 @@ const seeMorDetails = (data) => {
    let feelsLike = '';
    let windSpeed = ''
    let humidity = ''
+   const feels = [];
+    const wind = [];
+    const humid = [];
+    const tp = []
+
     hourly.forEach((hour,i) =>{
+      
       const date = new Date(hour.dt *1000)
       let hours = date.getHours();
      let minutes = date.getMinutes()
@@ -268,28 +274,37 @@ const seeMorDetails = (data) => {
       humidity = hour.humidity;
       feelsLike = hour.feels_like
      windSpeed = hour.wind_speed;
+     
+          feels.push(hour.feels_like)
+          humid.push(hour.humidity)
+          tp.push(hour.temp)
+          wind.push(hour.wind_speed)
+          
       const weatherIcon = `http://openweathermap.org/img/wn/${icon}.png`
-       hourlyList += `<div class='hourly-list'>
-       <div>
-         <span>${hours}</span>${description}</span><span>°C</span></span>
-          <span>${temp}</span><span>°C</span>
-          <span>${icon}</span>
-          <span>${description}</span>
-          <span>${windSpeed}</span><span>m/s.</span>
-         </div>
-       </div>`
+      //  hourlyList += `<div class='hourly-list'>
+      //  <div>
+      //    <span>${hours}</span>${description}</span><span>°C</span></span>
+      //     <span>${temp}</span><span>°C</span>
+      //     <span>${icon}</span>
+      //     <span>${description}</span>
+      //     <span>${windSpeed}</span><span>m/s.</span>
+      //    </div>
+      //  </div>`
      hourlyView += `
        <div class='detail-summary' data-set-id="${i}">
          <div>${hours}:${minutes} ${amPm}</div>
         <div>${temp} <span>°</span></div>
         <div><img src="${weatherIcon}" alt="${getWeatherIcon(i)}" class='weather-icon'/></div>
-       <div>${humidity} <span>%</span></div>
+       <div>${description}</div>
         <div>${windSpeed}<span>m/s</span></div>
         <div>
         <button class='display-more-info' id='${i}'>+</button>
         </div>
        </div>
        `
+
+
+
     })
 
   const hourlyForcastHeaders = `
@@ -305,27 +320,31 @@ const seeMorDetails = (data) => {
 
     const moreInfo = document.querySelectorAll('.display-more-info')
      const moreInfoArray = Array.from(moreInfo)
-     console.log('morinf', moreInfoArray)
-     moreInfoArray.forEach(btn =>{
-      btn.addEventListener('click',()=>{
-        const daily =    document.querySelector(".detail-summary")
-           const dataSet = btn.dataset.setId;
-          const  appendDetailToParent = btn.parentNode.parentNode
-
-        const hourlyMoreInfo  = `<div>
-         <div> feelslke: ${feelsLike}</div>
-         <div>wind: ${windSpeed}</div>
-         <div>himidity: ${humidity}</div>
+     moreInfoArray.forEach((btn ,i)=>{
+      const hourlyMoreInfo  = `<div>
+         <div> feelslke: ${tp[i]}</div>
+         <div> feelslke: ${feels[i]}</div>
+         <div>wind: ${wind[i]}</div>
+         <div>himidity: ${humid[i]}</div>
          <div> high </div>
          <div>low</div>
          <div>lat: ${lat}</div>
          <div>lon: ${lon} </div>
-        </div>`  
+        </div>` 
+      btn.addEventListener('click',()=>{
+        const daily =   Array.from( document.querySelectorAll(".detail-summary"))   
+          const  appendDetailToParent = btn.parentNode.parentNode
         const div = document.createElement('div')
         div.classList.add("more-info-div")
         div.innerHTML = hourlyMoreInfo
-    console.log('ddd',document.querySelector(".hourly-more-info"))
-    appendDetailToParent.after(div)
+    
+   
+      console.log( appendDetailToParent.lastElementChild)
+      const children = Array.from( appendDetailToParent.children)
+       
+      children[children.length] = hourlyMoreInfo
+      console.log(children)
+      
       })
      })
 }
