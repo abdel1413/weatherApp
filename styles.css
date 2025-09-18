@@ -51,10 +51,19 @@ body {
     margin-top: 5px;
 }
 
-#weather-result{
+
+.error404{
+   
+    text-align: center;
+     
+     color:'red' 
+   
+}
  
-    margin-top: 170px;
+#weather-result{
+    margin-top: 170px; 
     
+    text-align: center;
 }
 
 path{
@@ -162,6 +171,8 @@ margin-left: 10px;
     
  
 }
+
+
 
 .weather-info-description button{
     cursor: pointer;
