@@ -258,9 +258,9 @@ const seeMorDetails = (data) => {
     const wind = [];
     const humid = [];
     const tp = []
-
+ let hourlyInfo =   document.querySelector('.hourly-forecast-elements');
+  hourlyInfo.innerHTML = ""
     hourly.forEach((hour,i) =>{
-      
       const date = new Date(hour.dt *1000)
       let hours = date.getHours();
      let minutes = date.getMinutes()
@@ -274,7 +274,6 @@ const seeMorDetails = (data) => {
       humidity = hour.humidity;
       feelsLike = hour.feels_like
      windSpeed = hour.wind_speed;
-     
           feels.push(hour.feels_like)
           humid.push(hour.humidity)
           tp.push(hour.temp)
@@ -290,63 +289,104 @@ const seeMorDetails = (data) => {
       //     <span>${windSpeed}</span><span>m/s.</span>
       //    </div>
       //  </div>`
-     hourlyView += `
+
+     
+    
+     hourlyView = `
        <div class='detail-summary' data-set-id="${i}">
-         <div>${hours}:${minutes} ${amPm}</div>
-        <div>${temp} <span>°</span></div>
-        <div><img src="${weatherIcon}" alt="${getWeatherIcon(i)}" class='weather-icon'/></div>
-       <div>${description}</div>
-        <div>${windSpeed}<span>m/s</span></div>
-        <div>
-        <button class='display-more-info' id='${i}'>+</button>
-        </div>
+
+       <div class='details'>
+            <div>${hours}:${minutes} ${amPm}</div>
+            <div>${temp} <span>°</span></div>
+            <div><img src="${weatherIcon}" alt="${getWeatherIcon(i)}" class='weather-icon'/></div>
+          <div>${description}</div>
+            <div>${windSpeed}<span>m/s</span></div>
+          <button class='display-more-info-btn' id='${i}'>+</button> 
+       </div>
+       <div class=''>
+          <div class='hourly-more-info' id='${i}'></div>
+       </div>
        </div>
        `
-
-
-
+      hourlyInfo. innerHTML += `${hourlyView}`
     })
 
-  const hourlyForcastHeaders = `
-       <div class='hourly-forcast-headers'>
-         <div class='time'>Time</div>
-         <div class='temp'>Temp(°C)</div>
-         <div class='icon'>Icon</div>
-         <div class='humidity'>Description</div>
-         <div class='wind'>wind</div>
-         <div class='more'>More</div>
-         </div>`
-   document.querySelector('.daily-weather').innerHTML = `${ hourlyForcastHeaders+hourlyView}`
 
-    const moreInfo = document.querySelectorAll('.display-more-info')
-     const moreInfoArray = Array.from(moreInfo)
-     moreInfoArray.forEach((btn ,i)=>{
-      const hourlyMoreInfo  = `<div>
-         <div> feelslke: ${tp[i]}</div>
-         <div> feelslke: ${feels[i]}</div>
-         <div>wind: ${wind[i]}</div>
-         <div>himidity: ${humid[i]}</div>
-         <div> high </div>
-         <div>low</div>
-         <div>lat: ${lat}</div>
-         <div>lon: ${lon} </div>
-        </div>` 
-      btn.addEventListener('click',()=>{
-        const daily =   Array.from( document.querySelectorAll(".detail-summary"))   
-          const  appendDetailToParent = btn.parentNode.parentNode
-        const div = document.createElement('div')
-        div.classList.add("more-info-div")
-        div.innerHTML = hourlyMoreInfo
+    let moreInfoBtn = document.querySelectorAll('.display-more-info-btn')
     
-   
-      console.log( appendDetailToParent.lastElementChild)
-      const children = Array.from( appendDetailToParent.children)
+     const moreInfoArray = Array.from(moreInfoBtn)
+      
+     moreInfoArray.forEach((btn ,i)=>{
+     
+       btn.addEventListener('click',()=>{
+
+          
+     
+          displayHouryMoreInfo(btn.id)
+    
        
-      children[children.length] = hourlyMoreInfo
-      console.log(children)
+
+        
+        
+         // btn.textContent ="-"
+        //}else{
+        //  btn.textContent = '+'
+       // }
+        
+      
+
+       
+
+        // const daily =   Array.from( document.querySelectorAll(".detail-summary"))   
+        //   const  appendDetailToParent = btn.parentNode.parentNode
+        // const div = document.createElement('div')
+        // div.classList.add("more-info-div")
+        // div.innerHTML = hourlyMoreInfo
+         
+      
+     
+      // parent.forEach(p =>{
+      //   console.log(p)
+      // })
+      //parent.innerHTML =  `${hourlyMoreInfo}`;
       
       })
      })
+
+
+
+     
+     const displayHouryMoreInfo = (id)=>{ 
+        id = Number(id)
+     
+       const hourlyMoreInfo  = `<div>
+           <div> feelslke: ${tp[id]}</div>
+           <div> feelslke: ${feels[id]}</div>
+           <div>wind: ${wind[id]}</div>
+           <div>himidity: ${humid[id]}</div>
+           <div> high </div>
+           <div>low</div>
+           <div>lat: ${lat}</div>
+           <div>lon: ${lon} </div>
+          </div>` 
+          const  allMoreInfo = Array.from(document.querySelectorAll('.hourly-more-info'))
+        let moreInfoBtn = Array.from(document.querySelectorAll('.display-more-info-btn'))
+       
+           allMoreInfo.forEach(el =>{
+            
+            if(id === Number(el.id) ){
+              if(moreInfoBtn[id].textContent === "+"){
+                 el.innerHTML = `${hourlyMoreInfo}`
+                moreInfoBtn[id].textContent = "-" 
+                
+              }else{
+               el.innerHTML =''
+                moreInfoBtn[id].textContent = "+"
+              }
+            }
+            })
+           
+     }
 }
 
  

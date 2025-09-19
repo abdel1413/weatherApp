@@ -199,12 +199,12 @@ margin-left: 10px;
     color: #FFFFFF;
 }   
 
-.display-more-info{
+.display-more-info-btn{
     border: none;
    /* font-size: 1.2rem; */
 }
 
-.display-more-info:hover{
+.display-more-info-btn:hover{
     background-color: rgb(60, 152, 189);
     border: 1px solid rgb(60, 152, 189);
    color: #FFFFFF;
@@ -286,14 +286,23 @@ color: black;
  background-color: #F0F4F8;
 }
 
-/* .daily-weather{
-    margin: 10px;
-    padding: 30px;
+.hourly-forcast-headers{
+    background-color: #0177B6;
+    background-color: #1FA0D3;
+
+} 
+
+
+.hourly-forecast-elements{
+   
+   margin: 0;
+
     background-color: #FFFFFF;
     box-shadow:  5px 8px #e4e4e2;  
-} */
 
-.detail-summary,.hourly-forcast-headers{
+}
+
+.hourly-forcast-headers, .details{
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -302,21 +311,32 @@ color: black;
     font-size: 1rem;
     padding: 10px;
    
+   
     
 
+
+}
+
+.detail-summary{
+    display: flex;
+    flex-direction: column;
+  
+   margin-top: 10px;
 }
 .detail-summary:hover{
     background-color: #F0F4F8;
 }
 
+.details{
+    display: flex;
+    padding: 0;
+    margin: 0 ;
 
- .hourly-forcast-headers{
+    font-size: initial;
 
-    background-color: #0177B6;
-    background-color: #1FA0D3;
+}
 
-} 
-
+ 
 .weather-icon{
     height: 50px;
     width: 40px;
