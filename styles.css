@@ -47,7 +47,7 @@ body {
 }
 
 .converter button{
-   
+    display: none;
     height: 100%;
     padding:7px 10px;
     font-size: 1.1rem;
@@ -169,6 +169,7 @@ margin-left: 10px;
 
     }
 
+
     .weather-info, .items-list, .daily-forcast{
         margin: 20px;
         padding: 10px;
@@ -177,6 +178,10 @@ margin-left: 10px;
         box-shadow: 2px 3px #f2f1f1;
     }
 
+
+    .daily-forcast{
+        display: none;
+    }
 .weather-info-description{ 
    display: flex;
    font-size: 1.2rem;

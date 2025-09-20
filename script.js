@@ -2,7 +2,7 @@ const input = document.getElementById('cityInput');
 const form = document.getElementById('weatherForm');
 const resultDiv = document.getElementById('weather-result');
 const API_KEY = 'd1e34c8fe7600f6587b90b8e32c0f5f8'
-
+ 
 const lon = '13.41'
 const lat = '52.52'
 let refreshPage = 2*60*1000;
@@ -25,27 +25,42 @@ const fetchWeather = async (city) => {
   const     resp = await fetch(url);
   const data = await resp.json()
  
+   console.log('code',data.cod, typeof data.cod)
+   const converterB = document.querySelector(".converter button");
+   const dailyForecast = document.querySelector(".daily-forcast")
+   let weatherRes = document.querySelector("#weather-result")
   if(data.cod ===200){
      let lat = data.coord.lat;
      let lon = data.coord.lon
-      getHourlyForecast(lat,lon);
-    }else{
-       document.querySelector('.daily-weather').innerHTML = ''
+     converterB.style.display ='block'
+     dailyForecast.style.display= 'block'
+     weatherRes.style.display= 'block'
+     
+     getHourlyForecast(lat,lon);
+    }else if(data.cod ==="404"){
+      converterB.style.display = 'none'
+      dailyForecast.style.display= 'none'
+      weatherRes.style.display= 'none'
+      
+    document.querySelector(".hourly-forecast-elements").innerHTML = ""
     }
     return  data; 
 }
+
+
  let isCelsius = true;   
 form.addEventListener('submit', function(event) {
-  
+     
     event.preventDefault();
-    console.log('items list', document.querySelector(".items-list"))
+   
     const city = input.value;
+   
   fetchWeather(city).then(data=>{
 /**
        * display: hour - temp - icon - wind
        * more info: feellike-  wind-  humidity -high -low - long- lat
        */
-     console.log('d',data)
+  
     let weatherDescription ;
     let iconCode ;
     let  feelsLike;
@@ -54,7 +69,7 @@ form.addEventListener('submit', function(event) {
        weatherDescription = data.weather[0].description;
       iconCode = data.weather[0].icon;
       feelsLike = data.main.feels_like;
-     }
+     
     
  //const { humidity, pressure, feels_like, temp_max, temp_min} = data.main
    const timstamp = data.dt;
@@ -73,7 +88,7 @@ form.addEventListener('submit', function(event) {
     const amPm = hour >= 12 ? 'PM' : 'AM'; 
     hour = hour %12;
     hour = hour? hour: 12
-
+    console.log('dsdsdsfasd',document.querySelector(".input").value)
     resultDiv.innerHTML = `<div class="weather-info">
       <div class='weather-info-nav'>
          <p class='showing-weather'>Showing weather for ${city}, ${data.sys.country}</p>
@@ -100,14 +115,10 @@ form.addEventListener('submit', function(event) {
        </div
     </div>
     ` ;  
- const converterButton = document.querySelector('.converter button');
- 
-
-  
+ const converterButton = document.querySelector('.converter button');  
   converterButton.addEventListener('click',()=>{
     console.log('item list in btn', document.querySelector(".items-list"))
-    
-    
+  
      let allTemps=  document.querySelectorAll('.temp')
       converter(allTemps)
     //
@@ -125,7 +136,7 @@ moreDetailsButton.textContent = '-'
  moreDetailsButton.textContent = '+'
 }
 });
-     
+}   
   }).catch(error=>{
     console.error('Error fetching weather data:', error);
     resultDiv.innerHTML = `<p class="error">Could not retrieve weather data for "${city}". Please check the city name and try again.</p>`;
@@ -183,29 +194,25 @@ const seeMorDetails = (data) => {
 
 // let isCelsius = true;
 const converter=(temp)=>{
-
-
-    const flk = (document.querySelector(".feels-like-deg"))
-    console.log('flie', flk, typeof flk)
-   let r = parseFloat(flk.textContent)
-    console.log("r", r, typeof r)
+    const feelslike = (document.querySelector(".feels-like-deg"))
+   let fellsLikeTx = parseFloat(feelslike.textContent)
   Array.from(temp).forEach(t =>{
     
 
       let currTemp = parseFloat(t.textContent)
     
     if(isCelsius){
-      let rtext =   (r *9/5)+ 32;
+      let rtext =   (fellsLikeTx *9/5)+ 32;
       const allTempFah = (currTemp * 9/5) +32 ;
        t.textContent = toFixedFunction(allTempFah);
-       flk.textContent = toFixedFunction(rtext)
+       feelslike.textContent = toFixedFunction(rtext)
        isCelsius = false;
        document.querySelector(".converter button").textContent = "Celsius"
     }else{
       const allTempCel = (currTemp -32) * 5/9
-      const rcelText = (r -32) * 5/9
+      const rcelText = (fellsLikeTx -32) * 5/9
       t.textContent = toFixedFunction(allTempCel);
-      flk.textContent = toFixedFunction(rcelText)
+      feelslike.textContent = toFixedFunction(rcelText)
       isCelsius = true;
       document.querySelector(".converter button").textContent = "Fahrenheit"
     }
@@ -227,6 +234,8 @@ const converter=(temp)=>{
 // with your actual OpenWeatherMap API key.     
  
   const getHourlyForecast =  async(lon, lat)=>{
+    const cit = document.querySelector('.input')
+    console.log('cit', cit)
  const url = `https://api.openweathermap.org/data/3.0/onecall?lat=${lat}&lon=${lon}&exclude=current,minutely,daily,alerts&units=metric&appid=${API_KEY}`
  const resp = await fetch(url)
  const respons = await resp.json()
@@ -241,7 +250,9 @@ const converter=(temp)=>{
     const humid = [];
     const tp = []
  let hourlyInfo =   document.querySelector('.hourly-forecast-elements');
+ console.log('hourli info',hourlyInfo)
   hourlyInfo.innerHTML = ""
+    console.log('input', input.value)
     hourly.forEach((hour,i) =>{
       const date = new Date(hour.dt *1000)
       let hours = date.getHours();
