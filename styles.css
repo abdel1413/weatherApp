@@ -31,12 +31,38 @@ body {
     color:#0177B6 ;
     font-size: 1.2rem;
 }
+
+.buttons{
+    display: flex;
+    gap: 5px
+}
 #weatherForm{
     display: flex;
     flex-direction: row;
     justify-content: center;
     align-items: center;
-    gap: 10px;
+    gap: 15px;
+    
+
+}
+
+.converter button{
+   
+    height: 100%;
+    padding:7px 10px;
+    font-size: 1.1rem;
+    border-radius: 10px;
+    color: #F0F4F8;
+    background-color:rgb(22, 147, 197);
+    border: 1px solid rgb(22, 147, 197);
+    cursor: pointer;
+    
+}
+.converter button:hover{
+    background-color:rgb(25, 135, 179);
+    /* background-color: transparent; */
+
+    /* color: rgb(22, 147, 197); */
 
 }
 .menu-bar{

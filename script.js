@@ -34,11 +34,12 @@ const fetchWeather = async (city) => {
     }
     return  data; 
 }
-
+ let isCelsius = true;   
 form.addEventListener('submit', function(event) {
+  
     event.preventDefault();
+    console.log('items list', document.querySelector(".items-list"))
     const city = input.value;
-   let erroCode
   fetchWeather(city).then(data=>{
 /**
        * display: hour - temp - icon - wind
@@ -48,7 +49,7 @@ form.addEventListener('submit', function(event) {
     let weatherDescription ;
     let iconCode ;
     let  feelsLike;
-     erroCode = data.cod;
+    
      if(data.cod===200){
        weatherDescription = data.weather[0].description;
       iconCode = data.weather[0].icon;
@@ -79,18 +80,20 @@ form.addEventListener('submit', function(event) {
         <p class='current-time'> As of ${hour}:${minutes} ${amPm}</p>  
       </div>
       <div class='weather-info-details'>
-       <span id='temp'>${temparature}</span>
+       <span id='temp' class='temp'>${temparature}</span>
        <span class='deg-cel'>°</span>
        <span id='icon'><img src="${iconUrl}" alt="Weather Icon"/> </span>
-       <div class='converter'><button>Fahrenheit</button></div>
+       
       </div>
       
       <div class='weather-info-description'>
        <div class='description-items'>
         <p>${weatherDescription}</p>
-        <p>H: ${highTemp}°, L: ${lowTemp}°</p> 
+        <div class='high-low-temp'>
+        <div> H:<span class='high-temp temp'>${highTemp}</span><span>°</span> </div>
+        <div> L:<span class='low-temp temp'>${lowTemp}</span><span>°</span></div> 
         </div>
-        
+        </div>
         <div class='description-items'>
         <button class='more-details'>+</button>
         </div>
@@ -98,64 +101,16 @@ form.addEventListener('submit', function(event) {
     </div>
     ` ;  
  const converterButton = document.querySelector('.converter button');
-  let isCelsius = true;   
+ 
 
-  const tempSpan = document.getElementById('temp');
-  const degCelSpan = document.getElementById('deg-cel');
+  
   converterButton.addEventListener('click',()=>{
-    let currentTemp = parseFloat( tempSpan.textContent);
-    if(isCelsius){
-      // Convert to Fahrenheit'
-      if(!document.querySelector(".items-list")){
-        
-      }
-      const fahrenheitTemp = (currentTemp * 9/5) + 32;
-      tempSpan.textContent = fahrenheitTemp.toFixed(2);
-      const feelsLikeDoc = document.querySelector('.feels-like-deg')
-      //degCelSpan.textContent = '°F';
-       feelsLike = (feelsLike * 9/5) + 32;
-       feelsLikeDoc.textContent = feelsLike.toFixed(2)
-      converterButton.textContent = 'Celsius';
-       const tempMaxHigh = (highTemp * 9/5) + 32;
-       const tempMinLow = (lowTemp * 9/5) + 32;
-      const highLowTemp = document.querySelector('.weather-info-description p:nth-child(2)');
-       
-     if(document.querySelector(".items-list")){
-        const tempHigh = document.querySelector('.temp-high span:nth-child(2)')
-        const tempLow = document.querySelector('.temp-low span:nth-child(2)')
-          tempHigh.textContent = `${tempMaxHigh.toFixed(2)}`
-          tempLow.textContent = `${tempMinLow.toFixed(2)}`
-      
-     }
-      const feelsLikeDiv = document.querySelector('.feels-like-deg');
+    console.log('item list in btn', document.querySelector(".items-list"))
     
-      highLowTemp.innerHTML = `H: ${tempMaxHigh.toFixed(2)}°, L: ${tempMinLow.toFixed(2)}°`;
     
-      isCelsius = false;
-    
-    }else{
-      const celsiusTemp = (currentTemp - 32) * 5/9;
-      feelsLike = (feelsLike - 32) * 5/9;
-     
-      tempSpan.textContent = celsiusTemp.toFixed(2);
-       document.querySelector(".feels-like-deg").textContent = feelsLike.toFixed(2)
-      //degCelSpan.textContent = '°C';
-      
-      const highLowTemp = document.querySelector('.weather-info-description p:nth-child(2)');
-      highLowTemp.innerHTML = `H: ${highTemp}°, L: ${lowTemp}°`;
-     
-       if(document.querySelector(".items-list") && converterButton.textContent ==="Celsius"){
-         const tempHigh = document.querySelector('.temp-high span:nth-child(2)')
-         const tempLow = document.querySelector('.temp-low span:nth-child(2)')
-      
-      tempHigh.textContent = highTemp.toFixed(2)
-     tempLow.textContent = lowTemp.toFixed(2)
-     
-       
-      }
-       converterButton.textContent = 'Fahrenheit';
-      isCelsius = true;
-    }
+     let allTemps=  document.querySelectorAll('.temp')
+      converter(allTemps)
+    //
 
   });
     // Add event listener to the more details button
@@ -179,30 +134,38 @@ moreDetailsButton.textContent = '-'
     
    input.value = '';  
 })
-
+ 
 const seeMorDetails = (data) => {
      const visibility = data.visibility;
      const windSpeed = data.wind.speed;
     const { humidity, pressure, feels_like, temp_max, temp_min} = data.main
+   
+      
+    
+    console.log('fll lllikkk', data.main.feels_like, typeof data.main.feels_like)
  const ul = document.createElement('div');
  ul.classList.add(('items-list'));
  ul.innerHTML = `
    <p>Weather today in ${data.name}, ${data.sys.country}</p>
+   
    <div class='pres-sunrise-set'>
-      <div class='feels-like'> <div class='feels-like-text'>Feels Like:</div>
-      <div ><span class='feels-like-deg'>${(feels_like)}</span><span class='deg-cel deg'>°</span>
-      </div>
-      </div>
-      <div class='sunrise-set'>
-      <span class='sunrise'>Sunrise: ${new Date(data.sys.sunrise * 1000).toLocaleTimeString()}</span> |
-      <span class='sunset'>Sunset: ${new Date(data.sys.sunset * 1000).toLocaleTimeString()}</span>
-      </div>
+       <div class='feels-like'>
+            <div class='feels-like-text'>Feels Like: </div>
+            <div >
+              <span class='feels-like-deg '>${data.main.feels_like}</span> 
+              <span class='deg-cel deg'>°</span>
+            </div>
+       </div>
+        <div class='sunrise-set'>
+          <span class='sunrise'>Sunrise: ${new Date(data.sys.sunrise * 1000).toLocaleTimeString()}</span> |
+          <span class='sunset'>Sunset: ${new Date(data.sys.sunset * 1000).toLocaleTimeString()}</span>
+        </div>
   </div> 
   <div class='details-divider'> 
     <div class="info-divider">
       <div class="hibh-low-temp sub-info">
-        <div class='temp-high'><span>High:</span><span>${temp_max}</span><span>°</span></div>
-        <div class='temp-low'><span>Low:</span><span >${temp_min}</span><span>°</span></div>
+        <div class='temp-high'><span>High:</span><span class='temp'>${temp_max}</span><span>°</span></div>
+        <div class='temp-low'><span>Low:</span><span class='temp' >${temp_min}</span><span>°</span></div>
       </div>
       <div class='sub-info'> <span >Humidity:</span><span>${humidity}%</span></div>
       <div class='sub-info ><span>Pressure: </sapn><span>${pressure} hPa</span></div>
@@ -219,22 +182,41 @@ const seeMorDetails = (data) => {
 }
 
 // let isCelsius = true;
-// const converter=(temp)=>{
-//   if(isCelsius){
-//     // Convert to Fahrenheit
-//     const fahrenheitTemp = (temp * 9/5) + 32;
-//     return fahrenheitTemp.toFixed(2);
-   
-//   }else{
- 
-//     const celsiusTemp = (temp - 32) * 5/9;
-//    return celsiusTemp.toFixed(2);
-    
-//   }
-    
-// }
+const converter=(temp)=>{
 
 
+    const flk = (document.querySelector(".feels-like-deg"))
+    console.log('flie', flk, typeof flk)
+   let r = parseFloat(flk.textContent)
+    console.log("r", r, typeof r)
+  Array.from(temp).forEach(t =>{
+    
+
+      let currTemp = parseFloat(t.textContent)
+    
+    if(isCelsius){
+      let rtext =   (r *9/5)+ 32;
+      const allTempFah = (currTemp * 9/5) +32 ;
+       t.textContent = toFixedFunction(allTempFah);
+       flk.textContent = toFixedFunction(rtext)
+       isCelsius = false;
+       document.querySelector(".converter button").textContent = "Celsius"
+    }else{
+      const allTempCel = (currTemp -32) * 5/9
+      const rcelText = (r -32) * 5/9
+      t.textContent = toFixedFunction(allTempCel);
+      flk.textContent = toFixedFunction(rcelText)
+      isCelsius = true;
+      document.querySelector(".converter button").textContent = "Fahrenheit"
+    }
+
+   })
+      
+}
+
+ const toFixedFunction  = (num)=>{
+  return num.toFixed(2);
+ }
 
 //WILL COMEBAC TO SET INTERVAL
 // setInterval(
@@ -277,27 +259,15 @@ const seeMorDetails = (data) => {
           feels.push(hour.feels_like)
           humid.push(hour.humidity)
           tp.push(hour.temp)
-          wind.push(hour.wind_speed)
-          
+          wind.push(hour.wind_speed)  
       const weatherIcon = `http://openweathermap.org/img/wn/${icon}.png`
-      //  hourlyList += `<div class='hourly-list'>
-      //  <div>
-      //    <span>${hours}</span>${description}</span><span>°C</span></span>
-      //     <span>${temp}</span><span>°C</span>
-      //     <span>${icon}</span>
-      //     <span>${description}</span>
-      //     <span>${windSpeed}</span><span>m/s.</span>
-      //    </div>
-      //  </div>`
-
-     
-    
+      
      hourlyView = `
        <div class='detail-summary' data-set-id="${i}">
 
        <div class='details'>
             <div>${hours}:${minutes} ${amPm}</div>
-            <div>${temp} <span>°</span></div>
+            <div > <span class='temp'>${temp}</span><span>°</span></div>
             <div><img src="${weatherIcon}" alt="${getWeatherIcon(i)}" class='weather-icon'/></div>
           <div>${description}</div>
             <div>${windSpeed}<span>m/s</span></div>
@@ -323,32 +293,7 @@ const seeMorDetails = (data) => {
           
      
           displayHouryMoreInfo(btn.id)
-    
-       
-
-        
-        
-         // btn.textContent ="-"
-        //}else{
-        //  btn.textContent = '+'
-       // }
-        
       
-
-       
-
-        // const daily =   Array.from( document.querySelectorAll(".detail-summary"))   
-        //   const  appendDetailToParent = btn.parentNode.parentNode
-        // const div = document.createElement('div')
-        // div.classList.add("more-info-div")
-        // div.innerHTML = hourlyMoreInfo
-         
-      
-     
-      // parent.forEach(p =>{
-      //   console.log(p)
-      // })
-      //parent.innerHTML =  `${hourlyMoreInfo}`;
       
       })
      })
